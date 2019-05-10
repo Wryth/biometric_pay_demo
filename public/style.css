@@ -1,0 +1,633 @@
+* {
+  font-size: 100%;
+  font-family: 'Source Sans Pro', Helvetica, sans-serif;
+  color: white;
+}
+
+html {
+  position: fixed;
+  height: 100vh;
+  width: 100%;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  width: 100%;
+  height: 100%;
+  background: rgb(13,165,177);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#09b5a3', endColorstr='#1292c1',GradientType=1 );
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow: auto;
+}
+
+.display-none {
+  display: none;
+}
+
+#error-overlay {
+  position: absolute;
+  display: none;
+  width: 550px;
+  max-width: 90%;
+  max-height: 90%;
+  left: 50%;
+  top: 47.5%;
+  margin: 0 auto;
+  z-index: 1;
+  font-size: 0.9em;
+  color: white;
+  transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  overflow: auto;
+}
+
+#error-overlay div {
+  text-align: center;
+}
+
+#error-overlay p {
+  text-align: center;
+  font-size: 0.9em !important;
+}
+
+#error-overlay .error-feedback-container {
+  display: none;
+}
+
+.error-feedback-container p {
+  margin-block-start: 0.5em;
+  margin-block-end: 0.5em;
+}
+
+.error-feedback-container li {
+  margin-block-start: 0.1em;
+  margin-block-end: 0.1em;
+  text-align:left;
+}
+
+.error-feedback-container ol {
+  display: inline-block;
+  width: 45%;
+  margin-block-start: 0em;
+  margin-block-end: 0.5em;
+  font-size: 0.9em !important;
+}
+
+#error-overlay .error-header {
+  font-size: 1.2em !important;
+}
+.container-for-developer-overlays-and-zoom {
+  position: relative;
+  display: inline-block;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+#zoom-parent-container {
+  height: 360px;
+}
+
+#zoom-interface-container {
+  position: absolute;
+}
+
+#zoom-video-element {
+  height: inherit;
+  width: inherit;
+  /* REQUIRED - handle flipping of ZoOm interface.  users of selfie-style interfaces are trained to see their mirror image */
+  transform: scaleX(-1);
+}
+
+/* start of styles for overlay rect that is placed on top of ZoOm, button and checkbox, and fancy background fade container */
+
+#developer-overlay-semi-transparent-cover {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  background: rgb(13, 165, 177, 0.5);
+  background: linear-gradient(to right, rgba(9, 181, 163, .5), rgba(18, 146, 193, .95)) no-repeat center center fixed;
+  z-index: 8;
+}
+
+.background-to-black {
+  background: black;
+  height: 100%;
+  width: 100%;
+  position: fixed;
+  top:0;
+  left:0;
+  z-index: -1;
+  display: none;
+  pointer-events: none;
+}
+
+#controls {
+  width: 640px;
+  height: 400px;
+  max-width: 100%;
+  margin: 0 auto;
+
+}
+
+#controls p {
+  text-align: left;
+}
+
+/* start of styles for developer overlays - new user guidance, retry screens, upload progress screens, success animation screen */
+#user-helper-container {
+  z-index: 10;
+}
+
+#completion-animation-container {
+  z-index: 9;
+}
+
+#completion-animation-container,
+#user-helper-container {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  width: 100%;
+}
+
+/* session result styles */
+#completion-animation-bounding-container {
+  text-align: center;
+  height: inherit;
+}
+
+/*  start with display none */
+#completion-animation-success,
+#completion-animation-unsuccess {
+  display: none;
+  position: absolute;
+  height:100%;
+  width: 100%;
+  top:0;
+}
+
+#completion-animation-success> div,
+#completion-animation-unsuccess> div {
+  top: 50%;
+  position: relative;
+  transform: translateY(-50%);
+}
+
+
+.completion-animation-message p{
+  padding: 0;
+  margin-top: 15px;
+}
+
+/* result svg syling */
+#completion-animation-success-svg {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  display: block;
+  stroke-width: 2;
+  stroke-miterlimit: 10;
+  box-shadow: inset 0px 0px 0px white;
+  animation: fill .3s ease-in-out .3s forwards,
+    scale .3s ease-in-out .7s both;
+  stroke: rgba(13, 165, 177, 0.8);
+  margin: 0 auto;
+}
+
+#completion-animation-error-svg {
+  width: 50px;
+  height: 50px;
+}
+
+.zoom-session-success-checkmark__circle {
+  stroke-dasharray: 166;
+  stroke-dashoffset: 166;
+  stroke-width: 2;
+  stroke-miterlimit: 10;
+  stroke: white;
+  fill: none;
+  animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+}
+
+.zoom-session-checkmark__check {
+  transform-origin: 50% 50%;
+  stroke-dasharray: 48;
+  stroke-dashoffset: 48;
+  animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.6s forwards;
+}
+
+@keyframes stroke {
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes fill {
+  100% {
+    box-shadow: inset 0px 0px 0px 30px white;
+  }
+}
+
+/* progress bar */
+#upload-progress {
+  display: none;
+  z-index: 10;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+#upload-progress-value {
+  background-color: #018787;
+  border-color: #fff;
+  border-radius: 2px;
+  height: 5px;
+  width: 100px;
+  margin: 0 auto;
+}
+
+#upload-progress > div {
+  margin-top: 5px;
+  line-height: 18px;
+  font-size: 82%;
+}
+
+#upload-progress-value::-webkit-progress-bar {
+  background-color: #018787;
+  border-color: #fff;
+  border-radius: 2px;
+  height: 4px;
+  width: 100px;
+}
+
+#upload-progress-value::-webkit-progress-value {
+  background-color: #fff;
+  height: 4px;
+  border-radius: 2px;
+  box-shadow: 0 0 10px RGBA(255, 255, 255, .7);
+  width: 100px;
+}
+
+#upload-progress-value::-moz-progress-bar {
+  background-color: #fff;
+  height: 4px;
+  border-radius: 2px;
+  width: 100px;
+}
+
+#upload-progress-value::-ms-fill {
+  border-color: #018787;
+  background-color: #018787;
+}
+
+/* user helper styles */
+#user-helper-container {
+  display: block;
+}
+
+.user-helper {
+  width: 100%;
+  height: 100%;
+  display: block;
+  position: relative;
+  text-align: left;
+}
+
+.user-helper h2 {
+  font-size: 22px;
+  margin: 0 0 15px;
+  padding: 0 5px;
+}
+
+.big-button,
+.user-helper button {
+  position: relative;
+  height: 3.7em;
+  width: 250px;
+  margin: 10px auto 0;
+  color: white;
+  background: transparent;
+  border-radius: 5px;
+  border-width: 2px;
+  border-style: solid;
+  border-color: white;
+  color: white;
+  cursor: pointer;
+  width: 250px;
+  height: 40px;
+  margin: 10px auto 0;
+  transition: all .2s ease-out;
+  height: 3.7em;
+  border-color: rgba(255, 255, 255, 1.0);
+}
+
+.big-button:hover,
+.user-helper button:hover {
+  background-color: #fff;
+  color: #41a4b3;
+  border: 1px solid #fff;
+  transition: all .2s ease-out;
+}
+
+.user-helper button {
+  position: absolute;
+  height: 40px;
+  display: block;
+  margin: 0;
+  bottom: 25px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.user-helper > div {
+  width: 100%;
+  height: 69%;
+  position: relative;
+}
+.user-helper > div > div {
+  width: 100%;
+  text-align: center;
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+  height: auto;
+}
+
+.user-helper > div > div img {
+  display: block;
+  padding: 0;
+  height: 75px;
+  margin: 0 auto;
+}
+
+.user-helper > div > div img.side-by-side-images {
+  display: inline-block;
+  padding: 0;
+}
+
+.cancel-button-img {
+  height: 12px;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.link-skip-to-zoom {
+  position: absolute;
+  display: block;
+  bottom: 3px;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 15px;
+  margin: 0;
+  cursor: pointer;
+  font-size: 12px;
+  text-decoration: underline;
+  text-align: center;
+  width: 100%;
+}
+
+.add-padding {
+  display: inline-block;
+  padding: 10px;
+}
+
+#move-browser-window-title {
+  margin-top: 20px;
+}
+
+#zoom-logo {
+  padding: 0 !important;
+  margin: 0 auto 15px;
+  height: 50px;
+}
+
+#camera-angle-guide,
+#lighting-guide,
+#webcam-position-guide,
+#unsuccess-retry-guide,
+#cancelled-too-much-time-finding-phase-two-face-guide,
+#cancelled-too-much-time-finding-phase-one-face-guide {
+  display: none;
+}
+
+.scaler {
+  animation: scaler 3s ease infinite;
+}
+
+@keyframes scaler {
+  50% {
+    transform: scale(1.2);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+.user-helper * {
+  opacity: 0;
+  visibility: hidden;
+  animation: fadeInEnable 1s 0s 1 forwards;
+}
+
+.scaler {
+  animation: fadeInEnable 1s 0s 1 forwards, scaler 3s ease infinite;
+}
+
+.fade-in-1s { animation-delay:0.3s }
+.fade-in-2s { animation-delay:0.6s }
+.fade-in-3s { animation-delay:0.9s }
+.fade-in-4s { animation-delay:1.2s }
+
+@keyframes fadeInEnable {
+  100% {
+    opacity:1;
+    visibility: visible;
+  }
+}
+
+#auth-menu-container {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  position: absolute;
+  width: 100%;
+}
+
+#username {
+  width: 250px;
+  margin: 0 auto;
+  height: 45px;
+  margin-top: 10px;
+  text-indent: 10px;
+  font-size: 18px;
+  background-color: #fff;
+  color: #41a4b3;
+  border: 1px solid #fff;
+  border-radius: 5px;
+}
+
+button, input {
+  position: relative;
+  opacity: 0;
+  z-index: 10;
+}
+
+#status {
+  color: white;
+}
+
+#unsuccess-retry-guide .retry-images img,
+#cancelled-too-much-time-finding-phase-two-face-guide .retry-images img,
+#cancelled-too-much-time-finding-phase-one-face-guide .retry-images img {
+  display: inline-block;
+  width: auto;
+  height: 120px;
+  margin: 0;
+  padding: 0;
+}
+
+/* Add small margin between the left and right side retry images */
+.retry-images-left {
+  margin-right: 25px;
+}
+
+.retry-images .retry-images-left, .retry-images-right {
+  display: inline-block;
+}
+
+.retry-images-right p, .retry-images-left p {
+  margin: 5px 0px;
+  font-size: 12px;
+}
+
+.wrapping-box-container {
+  margin: 5px auto;
+  width: 800px;
+  height: auto;
+  color: #fff;
+  padding: 5px 0 0 0;
+}
+
+.custom-logo-container {
+  width: 250px;
+  margin: 20px auto 15px;
+}
+
+.custom-logo-container .img {
+  max-height: 60px;
+  width: auto;
+  height: auto;
+  text-align: center;
+  margin: 0 auto 10px;
+  position: relative;
+  padding-right: 4px;
+}
+
+.contact-us-link, #email-details, .sdk-site-link {
+  font-size: 10px;
+  letter-spacing: 0.6px;
+}
+.sdk-site-link {
+  width: 100%;
+  color: white;
+  margin: 10px 0px 5px 0px;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+#toggle-link {
+  position: absolute;
+  top: 95%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  padding:0;
+  color:inherit;
+  font: inherit;
+  font-size: 14px;
+}
+
+#liveness-button {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  position: absolute;
+}
+
+.sub-title {
+  font-style: normal;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin: 0px 0px 10px 0px;
+}
+
+/* to adjust header for webcam retry screen */
+#webcam-position-guide > div > div {
+  top: 40%;
+}
+
+/* to adjust the webcam images height and add space between the two images*/
+#webcam-position-guide > div > div > img {
+  padding: 0 40px;
+  height: 120px;
+}
+
+.image-switch-container {
+  display:none;
+  position: absolute;
+  margin: auto;
+  width: 640px;
+  height: 25px;
+  text-align: right;
+}
+
+.image-switch-container span:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.image-switch-container span {
+  padding-right: 22px;
+  font-size: 0.7em;
+  vertical-align: bottom;
+}
+
+.low-light-switch {
+  top: 0;
+  position: absolute;
+  cursor: pointer;
+  right: 0px;
+}
+
+.image-swap-container {
+  top: 0;
+}
+
+.image-swap-container img {
+  height: 20px;
+  width: 20px;
+}
+
+.image-swap-container img:nth-child(2) {
+	opacity: 0;
+}
+
+.image-switch-container img:first-child, .custom-logo-container img:first-child {
+  position: absolute;
+  opacity: 1;
+}
+
+.error-logo img:first-child {
+  position: relative;
+  display: block;
+}

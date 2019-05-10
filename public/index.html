@@ -2,8 +2,8 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="../sample-shared-files/images/favicon.ico">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
     <meta name="theme-color" content="#000000" />
     <!--
       manifest.json provides metadata used when your web app is installed on a
@@ -19,6 +19,15 @@
       work correctly both with client-side routing and a non-root public URL.
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
+    <link rel="stylesheet" href="./style.css">
+  
+    <script type="text/javascript" src="../sample-shared-files/js/third-party/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="../sample-shared-files/js/third-party/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="./controller.js"></script>
+    <script type="text/javascript" src="../sample-shared-files/js/CameraHelpers.js"></script>
+    <script type="text/javascript" src="../sample-shared-files/js/MobileDeviceHelpers.js"></script>
+    <script type="text/javascript" src="../sample-shared-files/js/ErrorAndPermissionHelpers.js"></script>
+
     <title>React App</title>
   </head>
   <body>
@@ -34,5 +43,406 @@
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
+    <div class="wrapping-box-container">
+      <div class="container-for-developer-overlays-and-zoom">
+        <div id="zoom-parent-container" class="display-none">
+          <div id="zoom-interface-container"></div>
+          <video autoplay playsinline id="zoom-video-element"></video>
+        </div>
+        <div id="developer-overlay-semi-transparent-cover"></div>
+        <!-- Developer-defined overlays for new users and retries -->
+        <div id="user-helper-container">
+        <!-- Welcome guidance screen 0 / Webcam Position (Only for desktops)-->
+          <div id="webcam-position-guide" class="user-helper">
+            <img class="cancel-button-img" onclick="cancelFromOverlay()" src="../sample-shared-files/images/zoom-letter-x.png">
+            <div>
+                <div>
+                  <h2 id="move-browser-window-title">Center Your Webcam</h2>
+                  <img class="fade-in-1s side-by-side-images" src="../sample-shared-files/images/webcam_bad_ok.png">
+                  <img class="fade-in-1s side-by-side-images" src="../sample-shared-files/images/webcam_good_ok.png">
+                </div>
+            </div>
+            <button class="fade-in-3s big-button" onclick="showNewUserGuidancePage3()">OK</button>
+            <a onclick="initiateZoomSessionCapture()" class="link-skip-to-zoom fade-in-3s">Skip Guidance</a>
+          </div>
+          <!-- Welcome guidance screen 1 / Angle Guide -->
+          <div id="camera-angle-guide" class="user-helper">
+            <img class="cancel-button-img" onclick="cancelFromOverlay()" src="../sample-shared-files/images/zoom-letter-x.png">
+            <div>
+              <div>
+                <h2>Ensure Camera At Eye Level</h2>
+                <img id="zoom-icon-angle-good" class="scaler fade-in-1s" src="../sample-shared-files/images/zoom-face-guy-angle-good-phone.png">
+                <img id="zoom-icon-angle-bad" class="fade-in-2s" src="../sample-shared-files/images/zoom-face-guy-angle-bad-phone.png">
+              </div>
+            </div>
+            <button class="fade-in-3s big-button" onclick="showNewUserGuidancePage3()">OK</button>
+            <a onclick="initiateZoomSessionCapture()" class="link-skip-to-zoom fade-in-3s">Skip Guidance</a>
+          </div>
+          <!-- Welcome guidance screen 2 / Lighting Guide -->
+          <div id="lighting-guide" class="user-helper">
+            <img class="cancel-button-img" onclick="cancelFromOverlay()" src="../sample-shared-files/images/zoom-letter-x.png">
+            <div>
+                <div>
+                  <h2>Light Your Face Evenly</h2>
+                  <img class="scaler fade-in-1s" src="../sample-shared-files/images/zoom-face-guy-lighting-good-web.png">
+                  <img class="fade-in-2s" src="../sample-shared-files/images/zoom-face-guy-lighting-side-web.png">
+                  <img class="fade-in-3s" src="../sample-shared-files/images/zoom-face-guy-lighting-back-web.png">
+                </div>
+            </div>
+            <button class="fade-in-4s big-button" onclick="initiateZoomSessionCapture()">OK</button>
+            <a onclick="initiateZoomSessionCapture()" class="link-skip-to-zoom fade-in-3s">Skip Guidance</a>
+          </div>
+          <!-- Show Ideal Image for phase 2 and current audit trail images -->
+          <div id="unsuccess-retry-guide" class="user-helper">
+            <img class="cancel-button-img" onclick="cancelFromOverlay()" src="../sample-shared-files/images/zoom-letter-x.png">
+            <div>
+                <div>
+                  <h2>Let's try that again</h2>
+                  <p id="feedback-text">Looks like some difficult environmental conditions.  Please see the images below.</p>
+                  <div class="retry-images">
+                    <div class="retry-images-left">
+                      <img src="">
+                      <img src="">
+                      <p>Your ZoOm</p>
+                    </div>
+                    <div class="retry-images-right">
+                      <img src="./images/ZoOmGirl1.png">
+                      <img src="./images/ZoOmGirl2.png">
+                      <p>Ideal ZoOm</p>
+                    </div>
+                  </div>
+                </div>
+            </div>
+            <button class="fade-in-1s big-button" onclick="showNewUserGuidance()">OK</button>
+            <a onclick="initiateZoomSessionCapture()" class="link-skip-to-zoom fade-in-3s">Skip Guidance</a>
+          </div>
+          <div id="controls" class="controls">
+            <div id="auth-menu-container">
+              <input type="text" name="username" class="control display-none" id="username" value="" placeholder="Enter Username" />
+              <br />
+              <button onclick="startEnrollment()" class="big-button display-none authentication-menu-button" id="enroll-input">Enroll</button>
+              <button onclick="startAuthentication()" class="big-button display-none authentication-menu-button">Authenticate</button>
+              <button onclick="isUserEnrolled()" class="big-button display-none authentication-menu-button">Check Enrollment</button>
+              <button onclick="deleteUserEnrollment()" class="big-button display-none authentication-menu-button">Delete Enrollment</button>
+            </div>
+            <button id="liveness-button" onclick="startLivenessCheck()" class="big-button display-none">Liveness Check</button>
+            <br />
+            <a href="#" onclick="toggleMenus()" id="toggle-link">Show Authentication Menu</a>
+          </div>
+        </div>
+        <div id="upload-progress">
+          <progress id="upload-progress-value" value="0" max="100"></progress>
+          <div class="upload-progress-message">Uploading<br />Encrypted<br />ZoOm Facemap</div>
+        </div>
+        <div id="completion-animation-container">
+          <div id="completion-animation-bounding-container">
+            <div id="completion-animation-success">
+              <div>
+                <!-- success check mark -->
+                <svg id="completion-animation-success-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+                  <circle class="zoom-session-success-checkmark__circle" cx="26" cy="26" r="25" fill="none"></circle>
+                  <path class="zoom-session-checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"></path>
+                </svg>
+                <div class="completion-animation-message">
+                  <p id="completion-animation-success-message"></p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div id="completion-animation-unsuccess">
+            <div>
+            <!-- unsuccess circle(X) -->
+            <svg id="completion-animation-error-svg" version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130.2 130.2">
+              <circle class="path circle" fill="none" stroke="#FFFAF0" stroke-width="6" stroke-miterlimit="10" cx="65.1" cy="65.1" r="62.1"></circle>
+              <line class="path line" fill="none" stroke="#FFFAF0" stroke-width="6" stroke-linecap="round" stroke-miterlimit="10" x1="34.4" y1="37.9" x2="95.8" y2="92.3"></line>
+              <line class="path line" fill="none" stroke="#FFFAF0" stroke-width="6" stroke-linecap="round" stroke-miterlimit="10" x1="95.8" y1="38" x2="34.4" y2="92.2"></line>
+            </svg>
+            <div class="completion-animation-message">
+                <p id="completion-animation-unsuccess-message"></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+      <div class="image-switch-container">
+        <span id="image-switch-text" onclick="toggleLowLightModeAnimation()">Brighten Screen</span>
+        <div class="image-swap-container">
+          <img id="light-off" class="low-light-switch" src="images/light-off.png" onclick="toggleLowLightModeAnimation()">
+          <img id="light-on" class="low-light-switch" src="images/light-on.png" onclick="toggleLowLightModeAnimation()">
+        </div>
+      </div>
+  
+      <div class="custom-logo-container display-none">
+        <div class="image-swap-container">
+          <img id="zoom-logo-white" src="../sample-shared-files/images/zoom_logo@2x.png" class="img">
+          <img id="zoom-logo-gradient" src="../sample-shared-files/images/zoom_logo_gradient@2x.png" class="img">
+        </div>
+        <p class="sub-title">LIVENESS</p>
+        <div class="email-section">
+          <span id="email-details"></span>
+          <span class="contact-us-link"><a href="https://dev.zoomlogin.com/zoomsdk/#/support" target="_blank">Contact Us</a></span>
+          <span class="sdk-site-link"> | <a href="https://dev.zoomlogin.com/zoomsdk/#/signin" target="_blank">Developers</a></span>
+        </div>
+      </div>
+  
+    </div>
+    <div id="loading-overlay">
+        <img id="loading-spinner" src="../sample-shared-files/images/ball-triangle.svg" />
+        <p id="status"></p>
+    </div>
+    <div id="error-overlay">
+      <div class="custom-logo-container error-logo">
+        <img id="zoom-logo-header" src="../sample-shared-files/images/zoom_logo@2x.png" class="img">
+      </div>
+      <h2><span class="error-header"></span></h2>
+      <div id="sdk-init-failed" class="error-feedback-container">
+        <p><span class="sdk-init-status"></span></p>
+        <div id="lockout-clock"></div>
+      </div>
+      <div id="sdk-preload-failed" class="error-feedback-container">
+        <p>An error was encountered preloading ZoOm resources.</p>
+      </div>
+      <div id="sdk-prepare-interface-failed" class="error-feedback-container">
+        <p><span class="sdk-prepare-interface-result"></span></p>
+      </div>
+      <div id="android-browser-error" class="error-feedback-container">
+        <p>To try ZoOm on Android,<br/>
+          use a supported browser or click on the link below.</p>
+        <p></p>
+        <div>
+          <a href="https://play.google.com/store/apps/details?id=com.facetec.zoomlogin&amp;pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1" target="_blank" style="margin:10px">
+            <img alt="Get it on Google Play" class="img-responsive" src="./images/google-play-badge.png" id="androidLogo" style="height:47px;" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Get it on Google Play">
+          </a>
+        </div>
+        <p>Current browsers supported on Android (latest versions of):<br/>
+          Chrome, Firefox, Opera, Edge</p>
+      </div>
+      <div id="ios-safari-error" class="error-feedback-container">
+        <p>We have detected that you are using an unsupported version of Safari.</p>
+        <p>The ZoOm Browser SDK is compatible with the latest version of the Safari mobile browser.</p>
+        <p>Want the app? Check us out on the App Store:</p>
+        <p></p>
+        <div>
+          <a class="ios-link" href="https://itunes.apple.com/us/app/zoom-connect/id1434075722?ls=1&mt=8" target="_blank" style="margin:10px">
+            <img class="img-responsive" id="apple-logo" style="height:45px;" src="./images/ios-app-store-badge.svg" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Download on the AppStore">
+          </a>
+        </div>
+      </div>
+      <div id="ios-browser-error" class="error-feedback-container">
+        <p>To access ZoOm&reg; Web on iOS,<br/>
+          please load this page using the Safari mobile browser.</p>
+        <p>Want the app? Check us out on the App Store:</p>
+        <p></p>
+        <div>
+          <a class="ios-link" href="https://itunes.apple.com/us/app/zoom-connect/id1434075722?ls=1&mt=8" target="_blank" style="margin:10px">
+            <img class="img-responsive" id="apple-logo" style="height:45px;" src="./images/ios-app-store-badge.svg" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Download on the AppStore">
+          </a>
+        </div>
+      </div>
+      <div id="browser-error" class="error-feedback-container">
+        <p>We're sorry, but to access ZoOm&reg; Web, you will need to upgrade to a modern, fully supported browser.</p>
+        <p>Current browsers supported (latest versions of):<br/>
+          Chrome, Firefox, Safari, Opera, Edge</p>
+      </div>
+      <div id="generic-api-unsuccess" class="error-feedback-container">
+        <p>We're sorry, but there seems to be an issue connecting to our server.</p>
+        <p>Please refresh your browser and try again.  If the problem persists, please contact support@zoomlogin.com.</p>
+        <p>For better assistance, please send us your Developer Console logs along with your email.</p>
+      </div>
+      <div id="generic-camera-error" class="error-feedback-container">
+        <p>We're sorry, but to access ZoOm&reg; Web, you will need to connect a compatible, working camera to your system.<br/>
+        If your camera is connected and functioning, please ensure that it is not in-use by another application, as well as that camera permissions have been granted for both this website and browser.</p>
+      </div>
+      <div id="generic-site-denied" class="error-feedback-container">
+        <p>This is most likely due to camera permissions being blocked for this website.<br/>
+          To ZoOm, please enable camera access from your browser's settings and <strong><a href=".">reload this page</a></strong>.</p>
+      </div>
+      <div id="generic-system-denied-or-stream-busy" class="error-feedback-container">
+        <p>This is most likely due to system-level camera permissions denied for this application, or your camera is currently in-use by another window.<br/>
+          To ZoOm, please enable camera permissions in your system's settings and close any other applications accessing the camera.</p>
+      </div>
+      <div id="generic-system-or-site-denied" class="error-feedback-container">
+        <p>This is most likely due to system-level camera permissions denied for this application, or your browser is blocking camera access for this website.<br/>
+          To ZoOm, please ensure camera permissions are enabled in your system's, and browser's, settings.</p>
+      </div>
+      <div id="generic-mediadevicefailed" class="error-feedback-container">
+        <p>This is most likely due to camera access previously being denied or canceling the camera permission's prompt without a response.<br/>
+          To ZoOm, please <strong><a href=".">reload this page</a></strong> and, when prompted, select <strong>Allow</strong>.<br/>
+          If you were not prompted for camera permissions, try clearing your browser's local website data and reloading this page.</p>
+      </div>
+      <div id="generic-overconstrainederror" class="error-feedback-container">
+        <p>No compatible camera device was detected.<br/>
+          To ZoOm, ensure your camera is properly connected and your system has permissions granted to access the hardware.</p>
+      </div>
+      <div id="safari-mac-camera-denied" class="error-feedback-container">
+        <p>To enable your camera for ZoOm: </p>
+        <ol>
+          <li>Click <strong>Safari</strong></li>
+          <li>Select <strong>Preferences...</strong></li>
+          <li>Go to the <strong>Websites</strong> tab</li>
+          <li>Select <strong>Camera</strong></li>
+          <li>Find ZoOm's website on the list</li>
+          <li>Change <strong>Deny</strong> to <strong>Allow</strong></li>
+          <li><strong><a href=".">Reload this page</a></strong></li>
+        </ol>
+      </div>
+      <div id="safari-ios-camera-denied" class="error-feedback-container">
+        <p>To enable your camera for ZoOm: </p>
+        <ol>
+          <li>Open <strong>Settings</strong></li>
+          <li>Select <strong>Safari</strong></li>
+          <li>Toggle on <strong>Camera & Microphone Access</strong></li>
+          <li><strong><a href=".">Reload this page</a></strong>, and if prompted for camera access, select <strong>Allow</strong></li>
+        </ol>
+      </div>
+      <div id="chrome-desktop-camera-denied" class="error-feedback-container">
+        <p>To enable your camera for ZoOm: </p>
+        <ol>
+          <li>Click on "&#x1F512;&nbsp;Secure" to the left of <span class="web-address-location"></span></li>
+          <li>Next to 'Camera', change <strong>Block</strong> to <strong>Allow</strong></li>
+          <li><strong><a href=".">Reload this page</a></strong></li>
+        </ol>
+      </div>
+      <div id="chrome-mobile-camera-denied" class="error-feedback-container">
+        <p>To enable your camera for ZoOm: </p>
+        <ol>
+          <li>Click on "&#x1F512;&nbsp;Secure" to the left of <span class="web-address-location"></span></li>
+          <li>Click on <strong>Site Settings</strong></li>
+          <li>Click on <strong>Access your camera</strong></li>
+          <li>Select <Strong>Allow</Strong></li>
+          <li><strong><a href=".">Reload this page</a></strong></li>
+        </ol>
+      </div>
+      <div id="mac-camera-disabled" class="error-feedback-container">
+        <p>To enable your camera for ZoOm: </p>
+        <ol>
+          <li>Open <strong>System Preferences</strong></li>
+          <li>Select <strong>Security & Privacy</strong></li>
+          <li>Go to the <strong>Privacy</strong> tab</li>
+          <li>Select <strong>Camera</strong></li>
+          <li>Click the checkbox to the left of your browser</li>
+          <li><strong><a href=".">Reload this page</a></strong></li>
+        </ol>
+      </div>
+      <div id="windows-camera-disabled" class="error-feedback-container">
+        <p>To enable your camera for ZoOm: </p>
+        <ol>
+          <li>Open <strong>Windows Settings</strong></li>
+          <li>Click on <strong>Privacy</strong></li>
+          <li>Select <strong>Camera</strong> from the sidebar</li>
+          <li>Under <strong>Allow apps to access your camera</strong>, <br>toggle on the switch</li>
+          <li><strong><a href=".">Reload this page</a></strong></li>
+        </ol>
+      </div>
+      <div id="windows-camera-disabled-or-busy" class="error-feedback-container">
+        <p>This is either due to your system settings not allowing camera access to apps, <br>or your camera is in-use by another application.</p>
+        <p>To enable your camera for ZoOm: </p>
+        <ol>
+          <li>Close any other applications currently accessing the camera</li>
+          <li>Open <strong>Windows Settings</strong></li>
+          <li>Click on <strong>Privacy</strong></li>
+          <li>Select <strong>Camera</strong> from the sidebar</li>
+          <li>Under <strong>Allow apps to access your camera</strong>,<br>
+            toggle on the switch</li>
+          <li><strong><a href=".">Reload this page</a></strong></li>
+        </ol>
+      </div>
+      <div id="firefox-desktop-camera-denied" class="error-feedback-container">
+        <p>To enable your camera for ZoOm: </p>
+        <ol>
+          <li>Click on the "&#x24D8;" symbol to the left of <span class="web-address-location"></span></li>
+          <li>Click on the "<strong>x</strong>" next to "Blocked Temporarily"</li>
+          <li><strong><a href=".">Reload this page</a></strong></li>
+        </ol>
+      </div>
+      <div id="firefox-mobile-camera-denied" class="error-feedback-container">
+          <p>To enable your camera for ZoOm: </p>
+          <ol>
+            <li><strong><a href=".">Reload this page</a></strong> and wait for camera access prompt</li>
+            <li>Ensure 'Front facing camera' is selected</li>
+            <li>Click <strong>Share</strong></li>
+          </ol>
+        </div>
+      <div id="firefox-camera-disabled" class="error-feedback-container">
+        <p>To enable your camera for ZoOm: </p>
+        <ol>
+          <li>Open your device's <strong>Settings</strong></li>
+          <li>Go to <strong>Apps</strong></li>
+          <li>Select <strong>Firefox</strong></li>
+          <li>Select <strong>Permissions</strong></li>
+          <li>Toggle on <strong>Camera</strong></li>
+          <li><strong><a href=".">Reload this page</a></strong></li>
+        </ol>
+      </div>
+      <div id="opera-mobile-camera-denied" class="error-feedback-container">
+        <p>To enable your camera for ZoOm: </p>
+        <ol>
+          <li>Click on "&#x1F512;&nbsp;Secure" to the left of <span class="web-address-location"></span></li>
+          <li>Go to <strong>Camera</strong></li>
+          <li>Select <strong>Allowed</strong></li>
+          <li><strong><a href=".">Reload this page</a></strong></li>
+        </ol>
+      </div>
+      <div id="opera-desktop-camera-denied" class="error-feedback-container">
+        <p>To enable your camera for ZoOm: </p>
+        <ol>
+          <li>Click on the camera icon to the left of <span class="web-address-location"></span></li>
+          <li>Select <strong>Clear This Setting and Reload</strong></li>
+        </ol>
+      </div>
+      <div id="edge-camera-denied" class="error-feedback-container">
+        <p>Please reload the page and click <strong>Allow</strong> when prompted for camera access.</p>
+      </div>
+      <div id="samsung-camera-denied" class="error-feedback-container">
+        <p>This is likely due to previously selecting <strong>Block</strong> when prompted for this website's camera permissions, or camera permissions have not been granted for this application.</p>
+        <p>To unblock this website's camera access for ZoOm: </p>
+        <ol>
+          <li>Press the <strong>Internet Settings</strong> icon</li>
+          <li>Select <strong>Advanced</strong></li>
+          <li>Select <strong>Manage website data</strong></li>
+          <li>Select your website's address:  <strong><span class="web-address-location"></span></strong></li>
+          <li>Press <strong>Delete</strong></li>
+          <li><strong><a href=".">Reload this page</a></strong></li>
+        </ol>
+        <p>To enable this application's camera permissions for ZoOm:</p>
+        <ol>
+          <li>Open your device's <strong>Settings</strong></li>
+          <li>Go to <strong>Apps</strong></li>
+          <li>Select <strong>Samsung Internet</strong></li>
+          <li>Select <strong>Permissions</strong></li>
+          <li>Toggle on <strong>Camera</strong></li>
+          <li><strong><a href=".">Reload this page</a></strong></li>
+        </ol>
+      </div>
+      <div id="samsung-camera-failed" class="error-feedback-container">
+        <p>If you were prompted for camera access and cancelled, please <strong><a href=".">reload this page</a></strong> and, when prompted, select <strong>Allow</strong>.</p>
+        <p>Otherwise, to enable your camera for ZoOm: </p>
+        <ol>
+          <li>Press the <strong>Internet Settings</strong> icon</li>
+          <li>Select <strong>Advanced</strong></li>
+          <li>Select <strong>Manage website data</strong></li>
+          <li>Select your website's address:  <strong><span class="web-address-location"></span></strong></li>
+          <li>Press <strong>Delete</strong></li>
+          <li><strong><a href=".">Reload this page</a></strong></li>
+        </ol>
+      </div>
+      <div id="camera-stream-busy" class="error-feedback-container">
+        <p>This is most likely due to another application currently using the camera.</p>
+        <p>To enable your camera for ZoOm: </p>
+        <ol>
+          <li>Close the other application that is accessing the camera</li>
+          <li><strong><a href=".">Reload this page</a></strong></li>
+        </ol>
+      </div>
+  
+      
+  
+      <p>Questions? Contact us at <a style="cursor:pointer" href="mailto:support@zoomlogin.com">support@zoomlogin.com</a>.</p>
+    </div>
+    <div class="background-to-black"></div>
+    
+    <script src="../ZoomAuthentication.js/ZoomAuthentication.js"></script>
+    
   </body>
 </html>
