@@ -28,7 +28,7 @@
     <script type="text/javascript" src="../sample-shared-files/js/MobileDeviceHelpers.js"></script>
     <script type="text/javascript" src="../sample-shared-files/js/ErrorAndPermissionHelpers.js"></script>
 
-    <title>React App</title>
+    <title>Biometric Pay App</title>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
@@ -43,157 +43,11 @@
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
-    <div class="wrapping-box-container">
-      <div class="container-for-developer-overlays-and-zoom">
-        <div id="zoom-parent-container" class="display-none">
-          <div id="zoom-interface-container"></div>
-          <video autoplay playsinline id="zoom-video-element"></video>
-        </div>
-        <div id="developer-overlay-semi-transparent-cover"></div>
-        <!-- Developer-defined overlays for new users and retries -->
-        <div id="user-helper-container">
-        <!-- Welcome guidance screen 0 / Webcam Position (Only for desktops)-->
-          <div id="webcam-position-guide" class="user-helper">
-            <img class="cancel-button-img" onclick="cancelFromOverlay()" src="../sample-shared-files/images/zoom-letter-x.png">
-            <div>
-                <div>
-                  <h2 id="move-browser-window-title">Center Your Webcam</h2>
-                  <img class="fade-in-1s side-by-side-images" src="../sample-shared-files/images/webcam_bad_ok.png">
-                  <img class="fade-in-1s side-by-side-images" src="../sample-shared-files/images/webcam_good_ok.png">
-                </div>
-            </div>
-            <button class="fade-in-3s big-button" onclick="showNewUserGuidancePage3()">OK</button>
-            <a onclick="initiateZoomSessionCapture()" class="link-skip-to-zoom fade-in-3s">Skip Guidance</a>
-          </div>
-          <!-- Welcome guidance screen 1 / Angle Guide -->
-          <div id="camera-angle-guide" class="user-helper">
-            <img class="cancel-button-img" onclick="cancelFromOverlay()" src="../sample-shared-files/images/zoom-letter-x.png">
-            <div>
-              <div>
-                <h2>Ensure Camera At Eye Level</h2>
-                <img id="zoom-icon-angle-good" class="scaler fade-in-1s" src="../sample-shared-files/images/zoom-face-guy-angle-good-phone.png">
-                <img id="zoom-icon-angle-bad" class="fade-in-2s" src="../sample-shared-files/images/zoom-face-guy-angle-bad-phone.png">
-              </div>
-            </div>
-            <button class="fade-in-3s big-button" onclick="showNewUserGuidancePage3()">OK</button>
-            <a onclick="initiateZoomSessionCapture()" class="link-skip-to-zoom fade-in-3s">Skip Guidance</a>
-          </div>
-          <!-- Welcome guidance screen 2 / Lighting Guide -->
-          <div id="lighting-guide" class="user-helper">
-            <img class="cancel-button-img" onclick="cancelFromOverlay()" src="../sample-shared-files/images/zoom-letter-x.png">
-            <div>
-                <div>
-                  <h2>Light Your Face Evenly</h2>
-                  <img class="scaler fade-in-1s" src="../sample-shared-files/images/zoom-face-guy-lighting-good-web.png">
-                  <img class="fade-in-2s" src="../sample-shared-files/images/zoom-face-guy-lighting-side-web.png">
-                  <img class="fade-in-3s" src="../sample-shared-files/images/zoom-face-guy-lighting-back-web.png">
-                </div>
-            </div>
-            <button class="fade-in-4s big-button" onclick="initiateZoomSessionCapture()">OK</button>
-            <a onclick="initiateZoomSessionCapture()" class="link-skip-to-zoom fade-in-3s">Skip Guidance</a>
-          </div>
-          <!-- Show Ideal Image for phase 2 and current audit trail images -->
-          <div id="unsuccess-retry-guide" class="user-helper">
-            <img class="cancel-button-img" onclick="cancelFromOverlay()" src="../sample-shared-files/images/zoom-letter-x.png">
-            <div>
-                <div>
-                  <h2>Let's try that again</h2>
-                  <p id="feedback-text">Looks like some difficult environmental conditions.  Please see the images below.</p>
-                  <div class="retry-images">
-                    <div class="retry-images-left">
-                      <img src="">
-                      <img src="">
-                      <p>Your ZoOm</p>
-                    </div>
-                    <div class="retry-images-right">
-                      <img src="./images/ZoOmGirl1.png">
-                      <img src="./images/ZoOmGirl2.png">
-                      <p>Ideal ZoOm</p>
-                    </div>
-                  </div>
-                </div>
-            </div>
-            <button class="fade-in-1s big-button" onclick="showNewUserGuidance()">OK</button>
-            <a onclick="initiateZoomSessionCapture()" class="link-skip-to-zoom fade-in-3s">Skip Guidance</a>
-          </div>
-          <div id="controls" class="controls">
-            <div id="auth-menu-container">
-              <input type="text" name="username" class="control display-none" id="username" value="" placeholder="Enter Username" />
-              <br />
-              <button onclick="startEnrollment()" class="big-button display-none authentication-menu-button" id="enroll-input">Enroll</button>
-              <button onclick="startAuthentication()" class="big-button display-none authentication-menu-button">Authenticate</button>
-              <button onclick="isUserEnrolled()" class="big-button display-none authentication-menu-button">Check Enrollment</button>
-              <button onclick="deleteUserEnrollment()" class="big-button display-none authentication-menu-button">Delete Enrollment</button>
-            </div>
-            <button id="liveness-button" onclick="startLivenessCheck()" class="big-button display-none">Liveness Check</button>
-            <br />
-            <a href="#" onclick="toggleMenus()" id="toggle-link">Show Authentication Menu</a>
-          </div>
-        </div>
-        <div id="upload-progress">
-          <progress id="upload-progress-value" value="0" max="100"></progress>
-          <div class="upload-progress-message">Uploading<br />Encrypted<br />ZoOm Facemap</div>
-        </div>
-        <div id="completion-animation-container">
-          <div id="completion-animation-bounding-container">
-            <div id="completion-animation-success">
-              <div>
-                <!-- success check mark -->
-                <svg id="completion-animation-success-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
-                  <circle class="zoom-session-success-checkmark__circle" cx="26" cy="26" r="25" fill="none"></circle>
-                  <path class="zoom-session-checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"></path>
-                </svg>
-                <div class="completion-animation-message">
-                  <p id="completion-animation-success-message"></p>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div id="completion-animation-unsuccess">
-            <div>
-            <!-- unsuccess circle(X) -->
-            <svg id="completion-animation-error-svg" version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130.2 130.2">
-              <circle class="path circle" fill="none" stroke="#FFFAF0" stroke-width="6" stroke-miterlimit="10" cx="65.1" cy="65.1" r="62.1"></circle>
-              <line class="path line" fill="none" stroke="#FFFAF0" stroke-width="6" stroke-linecap="round" stroke-miterlimit="10" x1="34.4" y1="37.9" x2="95.8" y2="92.3"></line>
-              <line class="path line" fill="none" stroke="#FFFAF0" stroke-width="6" stroke-linecap="round" stroke-miterlimit="10" x1="95.8" y1="38" x2="34.4" y2="92.2"></line>
-            </svg>
-            <div class="completion-animation-message">
-                <p id="completion-animation-unsuccess-message"></p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-  
-      <div class="image-switch-container">
-        <span id="image-switch-text" onclick="toggleLowLightModeAnimation()">Brighten Screen</span>
-        <div class="image-swap-container">
-          <img id="light-off" class="low-light-switch" src="images/light-off.png" onclick="toggleLowLightModeAnimation()">
-          <img id="light-on" class="low-light-switch" src="images/light-on.png" onclick="toggleLowLightModeAnimation()">
-        </div>
-      </div>
-  
-      <div class="custom-logo-container display-none">
-        <div class="image-swap-container">
-          <img id="zoom-logo-white" src="../sample-shared-files/images/zoom_logo@2x.png" class="img">
-          <img id="zoom-logo-gradient" src="../sample-shared-files/images/zoom_logo_gradient@2x.png" class="img">
-        </div>
-        <p class="sub-title">LIVENESS</p>
-        <div class="email-section">
-          <span id="email-details"></span>
-          <span class="contact-us-link"><a href="https://dev.zoomlogin.com/zoomsdk/#/support" target="_blank">Contact Us</a></span>
-          <span class="sdk-site-link"> | <a href="https://dev.zoomlogin.com/zoomsdk/#/signin" target="_blank">Developers</a></span>
-        </div>
-      </div>
-  
-    </div>
-    <div id="loading-overlay">
-        <img id="loading-spinner" src="../sample-shared-files/images/ball-triangle.svg" />
-        <p id="status"></p>
-    </div>
+    
+    <!--
     <div id="error-overlay">
       <div class="custom-logo-container error-logo">
-        <img id="zoom-logo-header" src="../sample-shared-files/images/zoom_logo@2x.png" class="img">
+        <img id="zoom-logo-header" src="../sample-shared-files/images/zoom_logo@2x.png" class="img"></img>
       </div>
       <h2><span class="error-header"></span></h2>
       <div id="sdk-init-failed" class="error-feedback-container">
@@ -212,7 +66,7 @@
         <p></p>
         <div>
           <a href="https://play.google.com/store/apps/details?id=com.facetec.zoomlogin&amp;pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1" target="_blank" style="margin:10px">
-            <img alt="Get it on Google Play" class="img-responsive" src="./images/google-play-badge.png" id="androidLogo" style="height:47px;" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Get it on Google Play">
+            <img alt="Get it on Google Play" class="img-responsive" src="./images/google-play-badge.png" id="androidLogo" style="height:47px;" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Get it on Google Play"></img>
           </a>
         </div>
         <p>Current browsers supported on Android (latest versions of):<br/>
@@ -225,7 +79,7 @@
         <p></p>
         <div>
           <a class="ios-link" href="https://itunes.apple.com/us/app/zoom-connect/id1434075722?ls=1&mt=8" target="_blank" style="margin:10px">
-            <img class="img-responsive" id="apple-logo" style="height:45px;" src="./images/ios-app-store-badge.svg" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Download on the AppStore">
+            <img class="img-responsive" id="apple-logo" style="height:45px;" src="./images/ios-app-store-badge.svg" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Download on the AppStore"></img>
           </a>
         </div>
       </div>
@@ -236,7 +90,7 @@
         <p></p>
         <div>
           <a class="ios-link" href="https://itunes.apple.com/us/app/zoom-connect/id1434075722?ls=1&mt=8" target="_blank" style="margin:10px">
-            <img class="img-responsive" id="apple-logo" style="height:45px;" src="./images/ios-app-store-badge.svg" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Download on the AppStore">
+            <img class="img-responsive" id="apple-logo" style="height:45px;" src="./images/ios-app-store-badge.svg" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Download on the AppStore"></img>
           </a>
         </div>
       </div>
@@ -310,7 +164,7 @@
           <li>Click on "&#x1F512;&nbsp;Secure" to the left of <span class="web-address-location"></span></li>
           <li>Click on <strong>Site Settings</strong></li>
           <li>Click on <strong>Access your camera</strong></li>
-          <li>Select <Strong>Allow</Strong></li>
+          <li>Select <strong>Allow</strong></li>
           <li><strong><a href=".">Reload this page</a></strong></li>
         </ol>
       </div>
@@ -331,19 +185,19 @@
           <li>Open <strong>Windows Settings</strong></li>
           <li>Click on <strong>Privacy</strong></li>
           <li>Select <strong>Camera</strong> from the sidebar</li>
-          <li>Under <strong>Allow apps to access your camera</strong>, <br>toggle on the switch</li>
+          <li>Under <strong>Allow apps to access your camera</strong>, <br/>toggle on the switch</li>
           <li><strong><a href=".">Reload this page</a></strong></li>
         </ol>
       </div>
       <div id="windows-camera-disabled-or-busy" class="error-feedback-container">
-        <p>This is either due to your system settings not allowing camera access to apps, <br>or your camera is in-use by another application.</p>
+        <p>This is either due to your system settings not allowing camera access to apps, <br/>or your camera is in-use by another application.</p>
         <p>To enable your camera for ZoOm: </p>
         <ol>
           <li>Close any other applications currently accessing the camera</li>
           <li>Open <strong>Windows Settings</strong></li>
           <li>Click on <strong>Privacy</strong></li>
           <li>Select <strong>Camera</strong> from the sidebar</li>
-          <li>Under <strong>Allow apps to access your camera</strong>,<br>
+          <li>Under <strong>Allow apps to access your camera</strong>,<br/>
             toggle on the switch</li>
           <li><strong><a href=".">Reload this page</a></strong></li>
         </ol>
@@ -440,9 +294,9 @@
   
       <p>Questions? Contact us at <a style="cursor:pointer" href="mailto:support@zoomlogin.com">support@zoomlogin.com</a>.</p>
     </div>
-    <div class="background-to-black"></div>
-    
-    <script src="../ZoomAuthentication.js/ZoomAuthentication.js"></script>
+-->
+
+    <script src="./ZoomAuthentication.js/ZoomAuthentication.js"></script>
     
   </body>
 </html>
