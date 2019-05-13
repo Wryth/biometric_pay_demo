@@ -1,0 +1,10 @@
+.Main{
+    background-color: rgb(255, 255, 255);
+    position: relative;
+    height: 666px;
+    width: 373px;
+    align-content: center;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}

@@ -1,14 +1,18 @@
 import React from 'react';
 import './Main.css';
 import Zoom from "./Zoom";
+import EnterName from "./EnterName";
 
+class Main extends React.Component {
 
-function Main() {
+  render() {
   return (
     <div className="Main">
-      <Zoom />
+      <EnterName />
+             
     </div>
   );
+  }
 }
 
 export default Main;
