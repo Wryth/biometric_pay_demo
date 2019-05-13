@@ -1,8 +1,25 @@
 import React from 'react';
 import './Zoom.css';
 
+class Zoom extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {value: ''};
 
-function Zoom() {
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  handleChange(event) {
+    this.setState({value: event.target.value});
+  }
+
+  handleSubmit(event) {
+    alert('A name was submitted: ' + this.state.value);
+    event.preventDefault();
+  }
+
+  render() {
   return (
     <div className="Zoom">
       <div className="wrapping-box-container">
@@ -16,7 +33,7 @@ function Zoom() {
         <div id="user-helper-container">
 
           <div id="webcam-position-guide" className="user-helper">
-            <img className="cancel-button-img" onClick="cancelFromOverlay()" src="../../../public/sample-shared-files/images/zoom-letter-x.png"></img>
+            <img className="cancel-button-img" onClick={window.cancelFromOverlay} src="../sample-shared-files/images/zoom-letter-x.png"></img>
             <div>
                 <div>
                   <h2 id="move-browser-window-title">Center Your Webcam</h2>
@@ -24,12 +41,12 @@ function Zoom() {
                   <img className="fade-in-1s side-by-side-images" src="../sample-shared-files/images/webcam_good_ok.png"></img>
                 </div>
             </div>
-            <button className="fade-in-3s big-button" onClick="showNewUserGuidancePage3()">OK</button>
-            <a onClick="initiateZoomSessionCapture()" className="link-skip-to-zoom fade-in-3s">Skip Guidance</a>
+            <button className="fade-in-3s big-button" onClick={window.showNewUserGuidancePage3}>OK</button>
+            <a onClick={window.initiateZoomSessionCapture} className="link-skip-to-zoom fade-in-3s">Skip Guidance</a>
           </div>
           
           <div id="camera-angle-guide" className="user-helper">
-            <img className="cancel-button-img" onClick="cancelFromOverlay()" src="../sample-shared-files/images/zoom-letter-x.png"></img>
+            <img className="cancel-button-img" onClick={window.cancelFromOverlay} src="../sample-shared-files/images/zoom-letter-x.png"></img>
             <div>
               <div>
                 <h2>Ensure Camera At Eye Level</h2>
@@ -37,12 +54,12 @@ function Zoom() {
                 <img id="zoom-icon-angle-bad" className="fade-in-2s" src="../sample-shared-files/images/zoom-face-guy-angle-bad-phone.png"></img>
               </div>
             </div>
-            <button className="fade-in-3s big-button" onClick="showNewUserGuidancePage3()">OK</button>
-            <a onClick="initiateZoomSessionCapture()" className="link-skip-to-zoom fade-in-3s">Skip Guidance</a>
+            <button className="fade-in-3s big-button" onClick={window.showNewUserGuidancePage3}>OK</button>
+            <a onClick={window.initiateZoomSessionCapture} className="link-skip-to-zoom fade-in-3s">Skip Guidance</a>
           </div>
           
           <div id="lighting-guide" className="user-helper">
-            <img className="cancel-button-img" onClick="cancelFromOverlay()" src="../sample-shared-files/images/zoom-letter-x.png"></img>
+            <img className="cancel-button-img" onClick={window.cancelFromOverlay} src="../sample-shared-files/images/zoom-letter-x.png"></img>
             <div>
                 <div>
                   <h2>Light Your Face Evenly</h2>
@@ -51,12 +68,12 @@ function Zoom() {
                   <img className="fade-in-3s" src="../sample-shared-files/images/zoom-face-guy-lighting-back-web.png"></img>
                 </div>
             </div>
-            <button className="fade-in-4s big-button" onClick="initiateZoomSessionCapture()">OK</button>
-            <a onClick="initiateZoomSessionCapture()" className="link-skip-to-zoom fade-in-3s">Skip Guidance</a>
+            <button className="fade-in-4s big-button" onClick={window.initiateZoomSessionCapture}>OK</button>
+            <a onClick={window.initiateZoomSessionCapture} className="link-skip-to-zoom fade-in-3s">Skip Guidance</a>
           </div>
           
           <div id="unsuccess-retry-guide" className="user-helper">
-            <img className="cancel-button-img" onClick="cancelFromOverlay()" src="../sample-shared-files/images/zoom-letter-x.png"></img>
+            <img className="cancel-button-img" onClick={window.cancelFromOverlay} src="../sample-shared-files/images/zoom-letter-x.png"></img>
             <div>
                 <div>
                   <h2>Let's try that again</h2>
@@ -75,21 +92,21 @@ function Zoom() {
                   </div>
                 </div>
             </div>
-            <button className="fade-in-1s big-button" onClick="showNewUserGuidance()">OK</button>
-            <a onClick="initiateZoomSessionCapture()" className="link-skip-to-zoom fade-in-3s">Skip Guidance</a>
+            <button className="fade-in-1s big-button" onClick={window.showNewUserGuidance}>OK</button>
+            <a onClick={window.initiateZoomSessionCapture} className="link-skip-to-zoom fade-in-3s">Skip Guidance</a>
           </div>
           <div id="controls" className="controls">
             <div id="auth-menu-container">
-              <input type="text" name="username" className="control display-none" id="username" value="" placeholder="Enter Username" />
+              <input type="text" name="username" className="control display-none" id="username" value={this.state.value} placeholder="Enter Username" onChange={this.handleChange}/>
               <br />
-              <button onClick="startEnrollment()" className="big-button display-none authentication-menu-button" id="enroll-input">Enroll</button>
-              <button onClick="startAuthentication()" className="big-button display-none authentication-menu-button">Authenticate</button>
-              <button onClick="isUserEnrolled()" className="big-button display-none authentication-menu-button">Check Enrollment</button>
-              <button onClick="deleteUserEnrollment()" className="big-button display-none authentication-menu-button">Delete Enrollment</button>
+              <button onClick={window.startEnrollment} className="big-button display-none authentication-menu-button" id="enroll-input">Enroll</button>
+              <button onClick={window.startAuthentication} className="big-button display-none authentication-menu-button">Authenticate</button>
+              <button onClick={window.isUserEnrolled} className="big-button display-none authentication-menu-button">Check Enrollment</button>
+              <button onClick={window.deleteUserEnrollment} className="big-button display-none authentication-menu-button">Delete Enrollment</button>
             </div>
-            <button id="liveness-button" onClick="startLivenessCheck()" className="big-button display-none">Liveness Check</button>
+            <button id="liveness-button" onClick={window.startLivenessCheck} className="big-button display-none">Liveness Check</button>
             <br />
-            <a href="#" onClick="toggleMenus()" id="toggle-link">Show Authentication Menu</a>
+            <a href="#" onClick={window.toggleMenus} id="toggle-link">Show Authentication Menu</a>
           </div>
         </div>
         <div id="upload-progress">
@@ -128,10 +145,10 @@ function Zoom() {
       </div>
   
       <div className="image-switch-container">
-        <span id="image-switch-text" onClick="toggleLowLightModeAnimation()">Brighten Screen</span>
+        <span id="image-switch-text" onClick={window.toggleLowLightModeAnimation}>Brighten Screen</span>
         <div className="image-swap-container">
-          <img id="light-off" className="low-light-switch" src="images/light-off.png" onClick="toggleLowLightModeAnimation()"></img>
-          <img id="light-on" className="low-light-switch" src="images/light-on.png" onClick="toggleLowLightModeAnimation()"></img>
+          <img id="light-off" className="low-light-switch" src="images/light-off.png" onClick={window.toggleLowLightModeAnimation}></img>
+          <img id="light-on" className="low-light-switch" src="images/light-on.png" onClick={window.toggleLowLightModeAnimation}></img>
         </div>
       </div>
   
@@ -160,6 +177,7 @@ function Zoom() {
 
     </div>
   );
-}
+};
+};
 
 export default Zoom;
