@@ -1,18 +1,20 @@
 
 .wrapping-box-container{
     width: 100%;
+    margin: 0;
+    padding: 0;
 }
 
 .container-for-developer-overlays-and-zoom{
     width: 100%;
     position: relative;
-    border: 0;
+    border: none !important;
 }
 
 #zoom-parent-container{
-    width: 100%;
+    width: 100% !important;
 }
 
 #zoom-video-element{
     width: 100%;
-}
+}   

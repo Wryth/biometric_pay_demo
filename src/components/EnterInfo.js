@@ -1,11 +1,12 @@
 import React from 'react';
 import './EnterInfo.css';
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
 class EnterInfo extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      name: '',
+      name: 'Derp',
       number: ''
     };
 
@@ -40,8 +41,11 @@ class EnterInfo extends React.Component {
               <input className="omdegInput" type="phone" value={this.state.number} onChange={this.handleNumberChange} placeholder="" />
               <p className="omdegInfo">Vi sender deg en SMS med kode når du skal logge på appen</p>
         </form>
-        <button id="nextBtn" onClick={this.handleSubmit}>Neste</button>
+        {/*<button id="nextBtn" onClick={this.handleSubmit}>Neste</button>*/}
+        <Link id="nextBtn" to="/Enroll">Neste</Link>
+
     </div>
+    
     );
   }   
 }

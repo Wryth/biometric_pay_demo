@@ -48,5 +48,9 @@
     font-size: 16px;
     border-radius: 8px;
     border: none;
+    line-height: 39px;
 }
 
+#next{
+    opacity: 1;
+}

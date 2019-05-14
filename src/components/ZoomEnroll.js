@@ -7,17 +7,13 @@ class ZoomEnroll extends React.Component {
     this.state = {value: ''};
 
     this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   handleChange(event) {
     this.setState({value: event.target.value});
   }
 
-  handleSubmit(event) {
-    alert('A name was submitted: ' + this.state.value);
-    event.preventDefault();
-  }
+
 
   render() {
   return (
@@ -100,13 +96,9 @@ class ZoomEnroll extends React.Component {
               <input type="text" name="username" className="control display-none" id="username" value={this.state.value} placeholder="Enter Username" onChange={this.handleChange}/>
               <br />
               <button onClick={window.startEnrollment} className="big-button display-none authentication-menu-button" id="enroll-input">Enroll</button>
-              <button onClick={window.startAuthentication} className="big-button display-none authentication-menu-button">Authenticate</button>
-              <button onClick={window.isUserEnrolled} className="big-button display-none authentication-menu-button">Check Enrollment</button>
-              <button onClick={window.deleteUserEnrollment} className="big-button display-none authentication-menu-button">Delete Enrollment</button>
             </div>
-            <button id="liveness-button" onClick={window.startLivenessCheck} className="big-button display-none">Liveness Check</button>
+            <button id="liveness-button" onClick={window.startEnrollment} className="big-button display-none">Enroll</button>
             <br />
-            <a href="#" onClick={window.toggleMenus} id="toggle-link">Show Authentication Menu</a>
           </div>
         </div>
         <div id="upload-progress">
