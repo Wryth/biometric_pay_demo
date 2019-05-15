@@ -1,30 +1,27 @@
 import React from 'react';
-import './ZoomEnroll.css';
+import './ZoomCamera.css';
 
-class ZoomEnroll extends React.Component {
+class ZoomCamera extends React.Component {
   constructor(props) {
     super(props);
     this.state = {value: ''};
 
     this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   handleChange(event) {
     this.setState({value: event.target.value});
   }
 
-  componentDidMount() {
-    const script = document.createElement("script");
-
-    script.src = process.env.PUBLIC_URL + "/ZoomAuthentication.js/ZoomAuthentication.js";
-    script.async = true;
-
-    document.body.appendChild(script);
+  handleSubmit(event) {
+    alert('A name was submitted: ' + this.state.value);
+    event.preventDefault();
   }
 
   render() {
   return (
-    <div className="ZoomEnroll">
+    <div className="ZoomCamera">
       <div className="wrapping-box-container">
         <div className="container-for-developer-overlays-and-zoom">
           <div id="zoom-parent-container" className="display-none">
@@ -103,9 +100,13 @@ class ZoomEnroll extends React.Component {
               <input type="text" name="username" className="control display-none" id="username" value={this.state.value} placeholder="Enter Username" onChange={this.handleChange}/>
               <br />
               <button onClick={window.startEnrollment} className="big-button display-none authentication-menu-button" id="enroll-input">Enroll</button>
+              <button onClick={window.startAuthentication} className="big-button display-none authentication-menu-button">Authenticate</button>
+              <button onClick={window.isUserEnrolled} className="big-button display-none authentication-menu-button">Check Enrollment</button>
+              <button onClick={window.deleteUserEnrollment} className="big-button display-none authentication-menu-button">Delete Enrollment</button>
             </div>
-            <button id="liveness-button" onClick={window.startEnrollment} className="big-button display-none">Enroll</button>
+            <button id="liveness-button" onClick={window.startLivenessCheck} className="big-button display-none">Liveness Check</button>
             <br />
+            <a href="#" onClick={window.toggleMenus} id="toggle-link">Show Authentication Menu</a>
           </div>
         </div>
         <div id="upload-progress">
@@ -151,6 +152,7 @@ class ZoomEnroll extends React.Component {
         </div>
       </div>
   
+  
     </div>
     
     <div id="loading-overlay">
@@ -159,10 +161,11 @@ class ZoomEnroll extends React.Component {
     </div>
     
     <div className="background-to-black"></div>
+    
 
     </div>
   );
 };
 };
 
-export default ZoomEnroll;
+export default ZoomCamera;

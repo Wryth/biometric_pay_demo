@@ -8,7 +8,7 @@ class TakePic extends React.Component {
     return(
     <div className="TakePic">
       <ZoomEnroll />
-
+      
     </div>
     );
   }   

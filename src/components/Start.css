@@ -1,0 +1,18 @@
+
+.linkBtn{
+    width: 149px;
+    height: 39px;
+    opacity: 1;
+    background-color: rgb(20, 100, 120);
+    font-family: Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-size: 16px;
+    border-radius: 8px;
+    border: none;
+    line-height: 39px;
+    margin-bottom: 25%;
+    padding: 12px 55px;
+}
+
+#enRollBtn{
+    margin-top: 50%;
+}

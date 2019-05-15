@@ -1,0 +1,19 @@
+import React from 'react';
+import './Pay.css';
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+
+class Pay extends React.Component {
+
+  render() {
+    return(
+    <div className="Pay">
+        <h2>Smil til kamera</h2>
+        <div id="cameraBox"></div>
+        <p>Du skal betale</p>
+        <p>kr 23,80</p>
+    </div>
+    );
+  }   
+}
+
+export default Pay;

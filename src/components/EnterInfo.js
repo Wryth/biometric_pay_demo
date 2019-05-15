@@ -6,7 +6,7 @@ class EnterInfo extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      name: 'Derp',
+      name: '',
       number: ''
     };
 
@@ -32,7 +32,7 @@ class EnterInfo extends React.Component {
   render() {
     return(
     <div className="EnterInfo">
-        <p id="omdeg">Om deg</p>
+        <h2 id="omdeg">Om deg</h2>
         <form onSubmit={this.handleSubmit}>
               <p id="inputName">Navn</p>
               <input className="omdegInput" type="text" value={this.state.name} onChange={this.handleNameChange} placeholder="" />
@@ -41,13 +41,11 @@ class EnterInfo extends React.Component {
               <input className="omdegInput" type="phone" value={this.state.number} onChange={this.handleNumberChange} placeholder="" />
               <p className="omdegInfo">Vi sender deg en SMS med kode når du skal logge på appen</p>
         </form>
-        {/*<button id="nextBtn" onClick={this.handleSubmit}>Neste</button>*/}
-        <Link id="nextBtn" to="/Enroll">Neste</Link>
-
+        <Link id="nextBtn" to="/Enroll" activeClassName="active">Neste</Link>
     </div>
     
     );
-  }   
+  }
 }
 
 export default EnterInfo;
