@@ -1,14 +1,14 @@
 import React from 'react';
 import './TakePic.css';
-import ZoomEnroll from "./ZoomEnroll";
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
 class TakePic extends React.Component {
-
   render() {
+    
     return(
     <div className="TakePic">
-      <ZoomEnroll />
-      
+    <div id="cameraBox"></div>
+      <Link className="linkBtn" id="brukdette" to="/ProfilePic">Neste</Link>
     </div>
     );
   }   

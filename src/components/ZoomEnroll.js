@@ -143,13 +143,6 @@ class ZoomEnroll extends React.Component {
         </div>
       </div>
   
-      <div className="image-switch-container">
-        <span id="image-switch-text" onClick={window.toggleLowLightModeAnimation}>Brighten Screen</span>
-        <div className="image-swap-container">
-          <img id="light-off" className="low-light-switch" src="images/light-off.png" onClick={window.toggleLowLightModeAnimation}></img>
-          <img id="light-on" className="low-light-switch" src="images/light-on.png" onClick={window.toggleLowLightModeAnimation}></img>
-        </div>
-      </div>
   
     </div>
     

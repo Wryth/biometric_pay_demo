@@ -6,10 +6,11 @@ class Start extends React.Component {
 
   render() {
     return(
-    <div className="Start">
-        <Link className="linkBtn" id="enRollBtn" to="/EnterInfo" >Enroll</Link>
-        <Link className="linkBtn" id="betalBtn" to="/Pay">Betal</Link>
-    </div>
+      <div className="Start">
+          <Link className="linkBtn" id="enRollBtn" to="/EnterInfo" >Enroll</Link>
+          <Link className="linkBtn" id="betalBtn" to="/Pay">Betal</Link>
+          <h1>{this.props.saveState}</h1>
+      </div>
     );
   }   
 }

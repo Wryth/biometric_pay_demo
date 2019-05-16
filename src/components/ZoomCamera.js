@@ -95,6 +95,8 @@ class ZoomCamera extends React.Component {
             <button className="fade-in-1s big-button" onClick={window.showNewUserGuidance}>OK</button>
             <a onClick={window.initiateZoomSessionCapture} className="link-skip-to-zoom fade-in-3s">Skip Guidance</a>
           </div>
+
+          {/* Eksempel på funksjoner som må bli launchet på ulike steder */}
           <div id="controls" className="controls">
             <div id="auth-menu-container">
               <input type="text" name="username" className="control display-none" id="username" value={this.state.value} placeholder="Enter Username" onChange={this.handleChange}/>
@@ -108,6 +110,10 @@ class ZoomCamera extends React.Component {
             <br />
             <a href="#" onClick={window.toggleMenus} id="toggle-link">Show Authentication Menu</a>
           </div>
+
+
+
+
         </div>
         <div id="upload-progress">
           <progress id="upload-progress-value" value="0" max="100"></progress>
@@ -144,21 +150,9 @@ class ZoomCamera extends React.Component {
         </div>
       </div>
   
-      <div className="image-switch-container">
-        <span id="image-switch-text" onClick={window.toggleLowLightModeAnimation}>Brighten Screen</span>
-        <div className="image-swap-container">
-          <img id="light-off" className="low-light-switch" src="images/light-off.png" onClick={window.toggleLowLightModeAnimation}></img>
-          <img id="light-on" className="low-light-switch" src="images/light-on.png" onClick={window.toggleLowLightModeAnimation}></img>
-        </div>
-      </div>
-  
   
     </div>
-    
-    <div id="loading-overlay">
-        <img id="loading-spinner" src="../sample-shared-files/images/ball-triangle.svg" />
-        <p id="status"></p>
-    </div>
+  
     
     <div className="background-to-black"></div>
     

@@ -11,6 +11,7 @@ class Pay extends React.Component {
         <div id="cameraBox"></div>
         <p>Du skal betale</p>
         <p>kr 23,80</p>
+        <Link className="linkBtn" id="betalBtn" to="/Confirm">Bekreft</Link>
     </div>
     );
   }   
