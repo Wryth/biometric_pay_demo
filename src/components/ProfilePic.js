@@ -9,9 +9,9 @@ class ProfilePic extends React.Component {
     <div className="ProfilePic">
       <h2>Profilbilde</h2>
       <div id="cameraBox"></div>
-      <Link className="linkBtn" to="/Samtykke">Bruk dette</Link>
-      <Link className="linkBtn" to="/TakePic">Ta nytt bilde</Link>
-      <Link className="linkBtn" id="betalBtn" to="/">Avbryt</Link>
+      <Link className="linkBtn" to="/Samtykke">Bruk</Link>
+      <Link className="linkBtn" to="/TakePic">Nytt</Link>
+      {/*<Link className="linkBtn" id="betalBtn" to="/">Avbryt</Link>*/}
     </div>
     );
   }   

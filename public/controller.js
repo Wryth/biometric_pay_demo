@@ -462,6 +462,32 @@ function deleteUserEnrollment() {
   xhr.send(dataToUpload);
 }
 
+function startFaceSearch() {
+  var dataToUpload = {
+    "sessionId": zoomResult.sessionId,
+    "enrollmentIdentifier": $("#username").val(),
+    "minMatchLevel": 0
+  }
+  // you may also pass a facemap instead of enrollmentIdentifier
+  
+  var xhr = new XMLHttpRequest();
+  xhr.withCredentials = true;
+  
+  xhr.addEventListener("readystatechange", function () {
+      if (this.readyState === 4) {
+          console.log(this.responseText);
+      }
+  });
+  
+  xhr.open("POST", "https://api.zoomauth.com/api/v1/biometrics/search");
+  xhr.setRequestHeader("X-App-Token", licenseKey);
+  
+  xhr.send(JSON.stringify(dataToUpload));
+}
+
+
+
+
 function fadeInMainUI() {
   document.getElementById("loading-spinner").style.display = "none";
   $("#developer-overlay-semi-transparent-cover").fadeIn(300, function () {

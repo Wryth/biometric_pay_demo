@@ -34,13 +34,17 @@ showCamera = (trueFalse) => {
   }
 }
 
+
+
+
+
   render() {
   return (    
     <div className={`Main${this.state.camera ? ' showCamera' : ''}`}>
-      <ZoomCamera />
+      
       <Router>
         <div className="Container">
-
+        <ZoomCamera />
           <Route exact path="/" 
             render={() => {
               this.showCamera(false);
@@ -74,6 +78,7 @@ showCamera = (trueFalse) => {
           <Route path="/TakePic"
             render={() => {
               this.showCamera(true);
+              window.startLivenessCheck();
               return (
                 <TakePic 
                   states={this.state}

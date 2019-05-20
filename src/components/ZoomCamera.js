@@ -153,7 +153,10 @@ class ZoomCamera extends React.Component {
   
     </div>
   
-    
+    <div id="loading-overlay">
+        <img id="loading-spinner" src="../sample-shared-files/images/ball-triangle.svg" />
+        <p id="status"></p>
+    </div>
     <div className="background-to-black"></div>
     
 
