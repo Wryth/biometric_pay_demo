@@ -49,11 +49,14 @@ window.onload = function () {
         $(".container-for-developer-overlays-and-zoom").css("border", "3px solid white");
         $(".image-switch-container").css("width", $(".container-for-developer-overlays-and-zoom").width());
         $(".image-switch-container").css("right", $(".container-for-developer-overlays-and-zoom").position().left);
+        
+        /*
         var lowLightSwitch = document.getElementsByClassName("low-light-switch");
         lowLightSwitch[0].addEventListener("click", function() {
           toggleLowLightModeAnimation();
         });
-
+        */  
+        
         // Update set of things we may want to update after we know how big the camera is and its aspect ratio.
         updateZoomUIConstraintsAfterCameraSuccess();
         $(".image-switch-container").fadeIn(300);
@@ -95,7 +98,7 @@ function initiateZoomSessionCapture() {
 
 // Called when ZoOm is completely done processing and has a result for the application to evaluate.
 function onZoomSessionComplete(zoomResult) {
-
+  console.log(zoomResult);
   // Handle cases where ZoOm exited early or otherwise a full session was not completed.
   // For instance, ZoOm will exit early and return FailedDueToTooMuchTimeToDetectFirstFace if
   // the user fails to place their face in the unzoomed oval in the first 7 seconds of the ZoOm capture.
@@ -285,6 +288,8 @@ function onZoomSessionComplete(zoomResult) {
   xhr.send(dataToUpload);
 }
 
+
+
 // Checks if response from FaceTec Managed REST API indicates that enrollment already exists.
 function isEnrollmentResponseNameCollision(responseJSON) {
   if(responseJSON && responseJSON.meta && responseJSON.meta.ok == false && responseJSON.meta.subCode && responseJSON.meta.subCode == "nameCollision") {
@@ -463,6 +468,12 @@ function deleteUserEnrollment() {
 }
 
 function startFaceSearch() {
+  var dataToUpload = new FormData();
+
+  dataToUpload.append("sessionId", zoomResult.sessionId);
+  dataToUpload.append("enrollmentIdentifier", $("#username").val());
+  dataToUpload.append("minMatchLevel", 0);
+  
   // you may also pass a facemap instead of enrollmentIdentifier
   
   var xhr = new XMLHttpRequest();
@@ -475,17 +486,10 @@ function startFaceSearch() {
   });
   
   xhr.open("POST", "https://api.zoomauth.com/api/v1/biometrics/search");
-  xhr.setRequestHeader("X-App-Token", licenseKey);
-  var dataToUpload = {
-    "sessionId": zoomResult.sessionId,
-    "enrollmentIdentifier": $("#username").val(),
-    "minMatchLevel": 0
-  }
+  xhr.setRequestHeader("X-App-Token", "dGfLBXdNbrodjpafesLXGGUzBM5FoolW");
   
-  xhr.send(JSON.stringify(dataToUpload));
+  xhr.send(dataToUpload);
 }
-
-
 
 
 function fadeInMainUI() {

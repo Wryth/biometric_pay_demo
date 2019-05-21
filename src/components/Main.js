@@ -4,7 +4,6 @@ import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
 import TakePic from "./TakePic";
 import EnterInfo from './EnterInfo';
-import ZoomEnroll from './ZoomEnroll';
 import Start from "./Start";
 import Pay from "./Pay";
 import Confirm from "./Confirm";
@@ -26,17 +25,13 @@ updateState = (stateChange) => {
   this.setState(stateChange);
 }
 
-showCamera = (trueFalse) => {
-  if (!this.state.camera === trueFalse){
+showCamera = (onOff) => {
+  if (!this.state.camera === onOff){
     this.setState({
-      camera: trueFalse
+      camera: onOff
     })
   }
 }
-
-
-
-
 
   render() {
   return (    
@@ -68,6 +63,7 @@ showCamera = (trueFalse) => {
           <Route path="/Pay"
             render={() => {
               this.showCamera(true);
+              window.startLivenessCheck();
               return (
                 <Pay
                   states={this.state}
