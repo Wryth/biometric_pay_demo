@@ -8,7 +8,8 @@ var SampleAppState = {
   Enrolling: 3,
   Authenticating: 4,
   CheckingEnrollment: 5,
-  DeletingEnrollment: 6
+  DeletingEnrollment: 6,
+  Searching: 7
 };
 
 var lastAction = SampleAppState.Idle;
@@ -167,6 +168,15 @@ function onZoomSessionComplete(zoomResult) {
     xhr.open("POST", zoomRestEndpointBaseURL + "/liveness");
     dataToUpload.append("facemap", zoomResult.facemap);
     successMessage = "Liveness Confirmed";
+  }
+  else if(lastAction == SampleAppState.Searching){
+    xhr.open("POST", zoomRestEndpointBaseURL + "/search");
+    dataToUpload.append("sessionId", zoomResult.sessionId);
+    dataToUpload.append("enrollmentIdentifier", $("#username").val());
+    dataToUpload.append("minMatchLevel", 1);
+    successMessage = "Search Confirmed";
+    xhr.withCredentials = true;
+
   }
 
   // License Key, Session ID, and specific headers are required when using the FaceTec Managed REST API
@@ -382,6 +392,51 @@ function startAuthentication() {
   initiateZoomSessionCapture();
 }
 
+function startFaceSearch() {
+  if($("#username").val() == "") {
+    alert("You must enter a Username to FaceSearch.");
+    return;
+  }
+
+  // Don't allow actions when actions are in progress.
+  if(lastAction != SampleAppState.Idle) {
+    return;
+  }
+
+  lastAction = SampleAppState.Searching;
+  initiateZoomSessionCapture();
+
+
+
+
+
+/*
+  var dataToUpload = new FormData();
+
+  dataToUpload.append("sessionId", zoomResult.sessionId);
+  dataToUpload.append("enrollmentIdentifier", $("#username").val());
+  dataToUpload.append("minMatchLevel", 0);
+  
+  // you may also pass a facemap instead of enrollmentIdentifier
+  
+  var xhr = new XMLHttpRequest();
+  xhr.withCredentials = true;
+  
+  xhr.addEventListener("readystatechange", function () {
+      if (this.readyState === 4) {
+          console.log(this.responseText);
+      }
+  });
+  
+  xhr.open("POST", "https://api.zoomauth.com/api/v1/biometrics/search");
+  xhr.setRequestHeader("X-App-Token", "dGfLBXdNbrodjpafesLXGGUzBM5FoolW");
+  
+  xhr.send(dataToUpload);
+*/
+
+}
+
+
 // Check if user is enrolled on the server already.
 function isUserEnrolled() {
   if($("#username").val() == "") {
@@ -464,30 +519,6 @@ function deleteUserEnrollment() {
       lastAction = SampleAppState.Idle;
     }
   };
-  xhr.send(dataToUpload);
-}
-
-function startFaceSearch() {
-  var dataToUpload = new FormData();
-
-  dataToUpload.append("sessionId", zoomResult.sessionId);
-  dataToUpload.append("enrollmentIdentifier", $("#username").val());
-  dataToUpload.append("minMatchLevel", 0);
-  
-  // you may also pass a facemap instead of enrollmentIdentifier
-  
-  var xhr = new XMLHttpRequest();
-  xhr.withCredentials = true;
-  
-  xhr.addEventListener("readystatechange", function () {
-      if (this.readyState === 4) {
-          console.log(this.responseText);
-      }
-  });
-  
-  xhr.open("POST", "https://api.zoomauth.com/api/v1/biometrics/search");
-  xhr.setRequestHeader("X-App-Token", "dGfLBXdNbrodjpafesLXGGUzBM5FoolW");
-  
   xhr.send(dataToUpload);
 }
 
