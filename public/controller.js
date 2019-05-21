@@ -463,11 +463,6 @@ function deleteUserEnrollment() {
 }
 
 function startFaceSearch() {
-  var dataToUpload = {
-    "sessionId": zoomResult.sessionId,
-    "enrollmentIdentifier": $("#username").val(),
-    "minMatchLevel": 0
-  }
   // you may also pass a facemap instead of enrollmentIdentifier
   
   var xhr = new XMLHttpRequest();
@@ -481,6 +476,11 @@ function startFaceSearch() {
   
   xhr.open("POST", "https://api.zoomauth.com/api/v1/biometrics/search");
   xhr.setRequestHeader("X-App-Token", licenseKey);
+  var dataToUpload = {
+    "sessionId": zoomResult.sessionId,
+    "enrollmentIdentifier": $("#username").val(),
+    "minMatchLevel": 0
+  }
   
   xhr.send(JSON.stringify(dataToUpload));
 }

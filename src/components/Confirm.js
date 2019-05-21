@@ -10,7 +10,7 @@ class Confirm extends React.Component {
         <h2>Hei {this.props.states.userName}</h2>
         <div id="cameraBox"></div>
         <p>Du har betalt</p>
-        <p>kr 23,80</p>
+        <p className="totalSum">kr 23,80</p>
         <p>Du finner kvitteringen din i appen</p>
         <Link className="linkBtn" id="betalBtn" to="/">Avslutt</Link>
     </div>
