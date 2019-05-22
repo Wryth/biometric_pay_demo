@@ -6,10 +6,12 @@ class EnterInfo extends React.Component {
 
   handleNameChange = (event) => {
     this.props.updateState({userName: event.target.value});
+    window.localStorage.setItem('userName', event.target.value);
   }
 
   handleNumberChange = (event) => {
     this.props.updateState({userNumber: event.target.value});
+    window.localStorage.setItem('userPhone', event.target.value);
   }
 
   handleSubmit(event) {

@@ -7,7 +7,7 @@ class Confirm extends React.Component {
   render() {
     return(
     <div className="Confirm">
-        <h2>Hei {this.props.states.userName}</h2>
+        <h2>Hei {window.localStorage.getItem("currentUser")}</h2>
         <div id="cameraBox"></div>
         <p>Du har betalt</p>
         <p className="totalSum">kr 23,80</p>

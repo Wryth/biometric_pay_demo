@@ -39,7 +39,7 @@ showCamera = (onOff) => {
       
       <Router>
         <div className="Container">
-        <ZoomCamera />
+        <ZoomCamera userName={this.state.userName}/>
           <Route exact path="/" 
             render={() => {
               this.showCamera(false);
@@ -63,7 +63,8 @@ showCamera = (onOff) => {
           <Route path="/Pay"
             render={() => {
               this.showCamera(true);
-              window.startLivenessCheck();
+              //window.startLivenessCheck(); // start faceSearch, returner første object, hent bruker navn og bilde
+              window.startFaceSearch();
               return (
                 <Pay
                   states={this.state}

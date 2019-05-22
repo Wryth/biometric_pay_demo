@@ -173,9 +173,9 @@ function onZoomSessionComplete(zoomResult) {
     xhr.open("POST", zoomRestEndpointBaseURL + "/search");
     dataToUpload.append("sessionId", zoomResult.sessionId);
     dataToUpload.append("enrollmentIdentifier", $("#username").val());
-    dataToUpload.append("minMatchLevel", 1);
+    dataToUpload.append("minMatchLevel", 0);
     successMessage = "Search Confirmed";
-    xhr.withCredentials = true;
+    //xhr.withCredentials = true;
 
   }
 
@@ -258,6 +258,17 @@ function onZoomSessionComplete(zoomResult) {
             // Fall through to show unsuccess screens.
           }
         }
+        else if(lastAction == SampleAppState.Searching){
+          success = true;
+          //console.log(responseJSON.data.results);
+          console.log(responseJSON);
+          
+          window.localStorage.setItem('currentUser', responseJSON.data.results[1].enrollmentIdentifier);
+          
+          console.log("Matched user : " + window.localStorage.getItem("currentUser"));
+          console.log("Matched user : " + responseJSON.data.results[0].enrollmentIdentifier);
+        }
+
 
         if(success) {
           appendLog(successMessage);
@@ -392,6 +403,7 @@ function startAuthentication() {
   initiateZoomSessionCapture();
 }
 
+// Returns people that match with the given face input.
 function startFaceSearch() {
   if($("#username").val() == "") {
     alert("You must enter a Username to FaceSearch.");
@@ -404,35 +416,11 @@ function startFaceSearch() {
   }
 
   lastAction = SampleAppState.Searching;
-  initiateZoomSessionCapture();
+  //initiateZoomSessionCapture();
+  showNewUserGuidance();
+}
 
-
-
-
-
-/*
-  var dataToUpload = new FormData();
-
-  dataToUpload.append("sessionId", zoomResult.sessionId);
-  dataToUpload.append("enrollmentIdentifier", $("#username").val());
-  dataToUpload.append("minMatchLevel", 0);
-  
-  // you may also pass a facemap instead of enrollmentIdentifier
-  
-  var xhr = new XMLHttpRequest();
-  xhr.withCredentials = true;
-  
-  xhr.addEventListener("readystatechange", function () {
-      if (this.readyState === 4) {
-          console.log(this.responseText);
-      }
-  });
-  
-  xhr.open("POST", "https://api.zoomauth.com/api/v1/biometrics/search");
-  xhr.setRequestHeader("X-App-Token", "dGfLBXdNbrodjpafesLXGGUzBM5FoolW");
-  
-  xhr.send(dataToUpload);
-*/
+function getProfilPicture() {
 
 }
 
