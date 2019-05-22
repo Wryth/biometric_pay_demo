@@ -34,3 +34,8 @@ p, h1{
   font-size: 25px;
   color: rgb(20 100 120);
 }
+
+.faceImg{
+  width: auto;
+  height: 100%;
+}

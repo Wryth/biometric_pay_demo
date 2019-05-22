@@ -75,7 +75,8 @@ showCamera = (onOff) => {
           <Route path="/TakePic"
             render={() => {
               this.showCamera(true);
-              window.startLivenessCheck();
+              //window.startLivenessCheck();
+              window.startAuthentication();
               return (
                 <TakePic 
                   states={this.state}
@@ -84,7 +85,7 @@ showCamera = (onOff) => {
 
           <Route path="/ProfilePic"
             render={() => {
-              this.showCamera(true);
+              this.showCamera(false);
               return (
                 <ProfilePic 
                   states={this.state}
@@ -93,7 +94,7 @@ showCamera = (onOff) => {
             
           <Route path="/Confirm" 
                       render={() => {
-                        this.showCamera(true);
+                        this.showCamera(false);
                         return (
                           <Confirm 
                             states={this.state}
@@ -102,7 +103,7 @@ showCamera = (onOff) => {
 
           <Route path="/Samtykke" 
                       render={() => {
-                        this.showCamera(true);
+                        this.showCamera(false);
                         return (
                           <Samtykke 
                             states={this.state}

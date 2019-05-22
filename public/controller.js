@@ -199,6 +199,8 @@ function onZoomSessionComplete(zoomResult) {
           // Success path for enrollment.
           if(responseJSON.data && responseJSON.data.livenessResult == "passed") {
             success = true;
+            window.localStorage.setItem("matchedFace",  responseJSON.faceMetrics.auditTrail[0]);
+
           }
           // User needs to retry path for enrollment.
           else if(responseJSON && responseJSON.meta && responseJSON.meta.subCode && responseJSON.meta.subCode == "notEnrolled") {
@@ -227,6 +229,9 @@ function onZoomSessionComplete(zoomResult) {
             // Success path for authentication.
             if(responseJSON.data.results[0].authenticated == true) {
               success = true;
+              console.log(zoomResult.faceMetrics.auditTrail[0]);
+              window.localStorage.setItem("matchedFace",  zoomResult.faceMetrics.auditTrail[0]);
+
             }
             // User needs to retry path for enrollment.
             else {
@@ -254,6 +259,7 @@ function onZoomSessionComplete(zoomResult) {
         else if(lastAction == SampleAppState.CheckingLiveness) {
           if (responseJSON && responseJSON.meta && responseJSON.meta.ok == true && responseJSON.data && responseJSON.data.livenessResult == "passed") {
             success = true;
+            window.localStorage.setItem("matchedFace",  zoomResult.faceMetrics.auditTrail[0]);
           }
           else {
             // Fall through to show unsuccess screens.
@@ -261,10 +267,10 @@ function onZoomSessionComplete(zoomResult) {
         }
         else if(lastAction == SampleAppState.Searching){
           success = true;
-          //console.log(responseJSON.data.results);
           console.log(responseJSON);
           
           window.localStorage.setItem('matchedUser', responseJSON.data.results[0].enrollmentIdentifier);
+          window.localStorage.setItem('matchedFace', responseJSON.data.results[0].auditTrailImage);
           
           console.log("UserName: " + window.localStorage.getItem("userName"));
           console.log("Matched user : " + window.localStorage.getItem("matchedUser"));
@@ -401,7 +407,8 @@ function startAuthentication() {
   }
 
   lastAction = SampleAppState.Authenticating;
-  initiateZoomSessionCapture();
+  //initiateZoomSessionCapture();
+  showNewUserGuidance();
 }
 
 // Returns people that match with the given face input.
@@ -422,6 +429,24 @@ function startFaceSearch() {
 }
 
 function getProfilPicture() {
+  // signal to the ZoOm SDK the type of audit trail that should be captured.
+ZoomSDK.auditTrailType = ZoomSDK.ZoomTypes.ZoomAuditTrailType.FullResolution;
+
+// capture a ZoOm Session
+zoomSession.capture();
+
+// sample code to handle the session result
+function onZoomSessionComplete(zoomResult) {
+   if(zoomResult.faceMetrics) {
+       // get the auidt trail image(s) if available
+       var auditTrail = zoomResult.faceMetrics.auditTrail;
+       // get the audit trail history if available
+       var auditTrailHistory = zoomResults.faceMetrics.auditTrailHistory;
+   }
+   // send the data to your chosen API for processing
+}
+
+
 
 }
 
