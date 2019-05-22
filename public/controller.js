@@ -153,14 +153,14 @@ function onZoomSessionComplete(zoomResult) {
   var successMessage;
   if(lastAction == SampleAppState.Enrolling) {
     xhr.open("POST", zoomRestEndpointBaseURL + "/enrollment");
-    dataToUpload.append("enrollmentIdentifier", $("#username").val());
+    dataToUpload.append("enrollmentIdentifier", window.localStorage.getItem("userName"));
     dataToUpload.append("facemap", zoomResult.facemap);
     dataToUpload.append("auditTrailImage", convertAuditTrailBase64ToBlobForFaceTecAPI(zoomResult.faceMetrics.auditTrail[0]));
     successMessage = "Enrollment Succeeded";
   }
   else if(lastAction == SampleAppState.Authenticating) {
     xhr.open("POST", zoomRestEndpointBaseURL + "/authenticate");
-    dataToUpload.append("source[enrollmentIdentifier]", $("#username").val());
+    dataToUpload.append("source[enrollmentIdentifier]", window.localStorage.getItem("userName"));
     dataToUpload.append("targets[0][facemap]", zoomResult.facemap);
     successMessage = "Authentication Succeeded";
   }
@@ -172,8 +172,9 @@ function onZoomSessionComplete(zoomResult) {
   else if(lastAction == SampleAppState.Searching){
     xhr.open("POST", zoomRestEndpointBaseURL + "/search");
     dataToUpload.append("sessionId", zoomResult.sessionId);
-    dataToUpload.append("enrollmentIdentifier", $("#username").val());
-    dataToUpload.append("minMatchLevel", 0);
+    //dataToUpload.append("enrollmentIdentifier", window.localStorage.getItem("userName"));
+    dataToUpload.append("facemap", zoomResult.facemap);
+    //dataToUpload.append("minMatchLevel", 1);
     successMessage = "Search Confirmed";
     //xhr.withCredentials = true;
 
@@ -263,10 +264,10 @@ function onZoomSessionComplete(zoomResult) {
           //console.log(responseJSON.data.results);
           console.log(responseJSON);
           
-          window.localStorage.setItem('currentUser', responseJSON.data.results[1].enrollmentIdentifier);
+          window.localStorage.setItem('matchedUser', responseJSON.data.results[0].enrollmentIdentifier);
           
-          console.log("Matched user : " + window.localStorage.getItem("currentUser"));
-          console.log("Matched user : " + responseJSON.data.results[0].enrollmentIdentifier);
+          console.log("UserName: " + window.localStorage.getItem("userName"));
+          console.log("Matched user : " + window.localStorage.getItem("matchedUser"));
         }
 
 
@@ -369,7 +370,7 @@ function startLivenessCheck() {
 // Applications could choose to handle this differently and check for the enrollment existing more actively.
 // We choose to not do this in this Sample for code clarity.
 function startEnrollment() {
-  if($("#username").val() == "") {
+  if(window.localStorage.getItem("userName") == "") {
     alert("You must enter a Username to enroll.");
     return;
   }
@@ -389,7 +390,7 @@ function startEnrollment() {
 // Applications could choose to handle this differently and check for the enrollment existing more actively.
 // We choose to not do this in this Sample for code clarity.
 function startAuthentication() {
-  if($("#username").val() == "") {
+  if(window.localStorage.getItem("userName") == "") {
     alert("You must enter a Username to authenticate.");
     return;
   }
@@ -405,7 +406,7 @@ function startAuthentication() {
 
 // Returns people that match with the given face input.
 function startFaceSearch() {
-  if($("#username").val() == "") {
+  if(window.localStorage.getItem("userName") == "") {
     alert("You must enter a Username to FaceSearch.");
     return;
   }
@@ -427,7 +428,7 @@ function getProfilPicture() {
 
 // Check if user is enrolled on the server already.
 function isUserEnrolled() {
-  if($("#username").val() == "") {
+  if(window.localStorage.getItem("userName") == "") {
     alert("You must enter a Username to attempt to check enrollment.");
     return;
   }
@@ -442,8 +443,8 @@ function isUserEnrolled() {
   // Vanilla xhr request to check enrollment.
   var dataToUpload = new FormData();
   var xhr = new XMLHttpRequest();
-  dataToUpload.append("enrollmentIdentifier", $("#username").val());
-  xhr.open("GET", zoomRestEndpointBaseURL + "/enrollment/" + $("#username").val());
+  dataToUpload.append("enrollmentIdentifier", window.localStorage.getItem("userName"));
+  xhr.open("GET", zoomRestEndpointBaseURL + "/enrollment/" + window.localStorage.getItem("userName"));
   xhr.setRequestHeader("X-App-Token", licenseKey);
   xhr.onreadystatechange = function () {
     if (this.readyState === 4) {
@@ -469,7 +470,7 @@ function isUserEnrolled() {
 
 // Check if user is enrolled on the server already.
 function deleteUserEnrollment() {
-  if($("#username").val() == "") {
+  if(window.localStorage.getItem("userName") == "") {
     alert("You must enter a Username to attempt to delete.");
     return;
   }
@@ -485,8 +486,8 @@ function deleteUserEnrollment() {
   // Note: this does not check if users exists already.
   var dataToUpload = new FormData();
   var xhr = new XMLHttpRequest();
-  dataToUpload.append("enrollmentIdentifier", $("#username").val());
-  xhr.open("DELETE", zoomRestEndpointBaseURL + "/enrollment/" + $("#username").val());
+  dataToUpload.append("enrollmentIdentifier", window.localStorage.getItem("userName"));
+  xhr.open("DELETE", zoomRestEndpointBaseURL + "/enrollment/" + window.localStorage.getItem("userName"));
   xhr.setRequestHeader("X-App-Token", licenseKey);
   xhr.onreadystatechange = function () {
     if (this.readyState === 4) {
