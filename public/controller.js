@@ -199,7 +199,8 @@ function onZoomSessionComplete(zoomResult) {
           // Success path for enrollment.
           if(responseJSON.data && responseJSON.data.livenessResult == "passed") {
             success = true;
-            window.localStorage.setItem("matchedFace",  responseJSON.faceMetrics.auditTrail[0]);
+            console.log(zoomResult.faceMetrics.auditTrail[0]);
+            window.localStorage.setItem("matchedFace",  zoomResult.faceMetrics.auditTrail[0]);
 
           }
           // User needs to retry path for enrollment.

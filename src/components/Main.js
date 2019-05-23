@@ -76,7 +76,8 @@ showCamera = (onOff) => {
             render={() => {
               this.showCamera(true);
               //window.startLivenessCheck();
-              window.startAuthentication();
+              //window.startAuthentication();
+              window.startEnrollment();
               return (
                 <TakePic 
                   states={this.state}

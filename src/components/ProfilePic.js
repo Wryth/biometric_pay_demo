@@ -3,6 +3,12 @@ import './ProfilePic.css';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
 class ProfilePic extends React.Component {
+  newpic = () => {
+    window.deleteUserEnrollment()
+    setTimeout(() => window.startEnrollment(), 5000)
+  }
+
+
   render() {
 
     return(
@@ -12,7 +18,7 @@ class ProfilePic extends React.Component {
         <img className="faceImg" src={window.localStorage.getItem('matchedFace')}></img>
       </div>
       <Link className="linkBtn" id="brukBtn" to="/Samtykke">Bruk</Link>
-      <Link className="linkBtn" id="nyttBtn" to="/TakePic">Nytt</Link>
+      <Link onClick={this.newpic} className="linkBtn" id="nyttBtn" to="/TakePic">Nytt</Link>
       {/*<Link className="linkBtn" id="betalBtn" to="/">Avbryt</Link>*/}
     </div>
     );
