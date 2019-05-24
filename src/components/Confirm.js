@@ -15,7 +15,7 @@ class Confirm extends React.Component {
     <div className="Confirm">
         <h2>Hei {window.localStorage.getItem("matchedUser")}</h2>
         <div id="cameraBox">
-          <img className="faceImg" src={window.localStorage.getItem('matchedFace')} ></img>
+          <img className="faceImg" alt="userFace" src={window.localStorage.getItem('matchedFace')} ></img>
         </div>
         <p>Du har betalt</p>
         <p className="totalSum">kr 23,80</p>

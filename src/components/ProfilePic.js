@@ -15,7 +15,7 @@ class ProfilePic extends React.Component {
     <div className="ProfilePic">
       <h2>Profilbilde</h2>
       <div id="cameraBox">
-        <img className="faceImg" src={window.localStorage.getItem('matchedFace')}></img>
+        <img className="faceImg" alt="userFace" src={window.localStorage.getItem('matchedFace')}></img>
       </div>
       <Link className="linkBtn" id="brukBtn" to="/Samtykke">Bruk</Link>
       <Link onClick={this.newpic} className="linkBtn" id="nyttBtn" to="/TakePic">Nytt</Link>

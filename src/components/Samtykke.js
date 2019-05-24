@@ -9,7 +9,7 @@ class Confirm extends React.Component {
     <div className="Confirm">
         <h2>Hei {this.props.states.userName}</h2>
         <div id="cameraBox">
-        <img className="faceImg" src={window.localStorage.getItem('matchedFace')}/>
+        <img className="faceImg" alt="userFace" src={window.localStorage.getItem('matchedFace')}/>
         </div>
         <p>Mobil: {this.props.states.userNumber}</p>
         <p>Du er snart klar til å ta i bruk Betal med ett smil, men før vi går videre må vi be om ditt samtykke til å innhente noe mer data om deg. Du trenger BankID på mobil for å gå videre</p>

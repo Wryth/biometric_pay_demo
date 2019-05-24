@@ -26,12 +26,6 @@
     margin-top: 46px;
 }
 
-#cameraBox{
-    height: 360px;
-    width: auto;
-}
-
-
 .showCamera .ZoomCamera {
     display: block;
 }
@@ -44,5 +38,5 @@ background: none;
 }
 
 .controls{
-    display: none;
+    display: none !important;
 }

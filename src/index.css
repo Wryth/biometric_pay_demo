@@ -35,6 +35,11 @@ p, h1{
   color: rgb(20 100 120);
 }
 
+#cameraBox{
+  height: 360px;
+  width: auto;
+}
+
 .faceImg{
   width: auto;
   height: 100%;

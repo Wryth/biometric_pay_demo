@@ -523,7 +523,7 @@ function deleteUserEnrollment() {
       try {
         var responseJSON = JSON.parse(this.responseText);
         if(responseJSON.meta) {
-          alert("Response received from ZoOm REST API: " + JSON.stringify(responseJSON.meta));
+          console.log("Response received from ZoOm REST API: " + JSON.stringify(responseJSON.meta));
         }
       }
       catch (e) {

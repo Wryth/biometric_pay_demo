@@ -1,1 +1,2 @@
 make it so that the app progresses when faces as matched, or enrollment was successfull
+- load APIRespones to a "status" localstorage variable, depending components will then check this to trigger a new component launch
