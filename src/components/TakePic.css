@@ -1,9 +1,8 @@
 .TakePic{
-    
+    height: 100%;
+    width: 100%;
 }
 
-#brukdette{
-    bottom: 5%;
-    left: 15.5%;
-    position: absolute;
+#mockH2{
+    height: 46px;
 }

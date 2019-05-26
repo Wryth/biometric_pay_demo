@@ -8,6 +8,7 @@ class TakePic extends React.Component {
     
     return(
     <div className="TakePic">
+    <div id="mockH2"></div>
     <div id="cameraBox"></div>
       <Link className="linkBtn" id="brukdette" to="/ProfilePic">Neste</Link>
     </div>

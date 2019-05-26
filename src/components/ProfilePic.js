@@ -5,7 +5,7 @@ import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 class ProfilePic extends React.Component {
   newpic = () => {
     window.deleteUserEnrollment()
-    setTimeout(() => window.startEnrollment(), 5000)
+    setTimeout(() => window.startEnrollment(), 3000)
   }
 
 

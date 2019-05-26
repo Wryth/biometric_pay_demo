@@ -42,7 +42,7 @@ class ZoomCamera extends React.Component {
                 </div>
             </div>
             <button className="fade-in-3s big-button" onClick={window.showNewUserGuidancePage3}>OK</button>
-            <a onClick={window.initiateZoomSessionCapture} className="link-skip-to-zoom fade-in-3s">Skip Guidance</a>
+            {/*<a onClick={window.initiateZoomSessionCapture} className="link-skip-to-zoom fade-in-3s">Skip Guidance</a>*/}
           </div>
           
           <div id="camera-angle-guide" className="user-helper">
@@ -55,7 +55,7 @@ class ZoomCamera extends React.Component {
               </div>
             </div>
             <button className="fade-in-3s big-button" onClick={window.showNewUserGuidancePage3}>OK</button>
-            <a onClick={window.initiateZoomSessionCapture} className="link-skip-to-zoom fade-in-3s">Skip Guidance</a>
+            {/*<a onClick={window.initiateZoomSessionCapture} className="link-skip-to-zoom fade-in-3s">Skip Guidance</a>*/}
           </div>
           
           <div id="lighting-guide" className="user-helper">
@@ -69,7 +69,7 @@ class ZoomCamera extends React.Component {
                 </div>
             </div>
             <button className="fade-in-4s big-button" onClick={window.initiateZoomSessionCapture}>OK</button>
-            <a onClick={window.initiateZoomSessionCapture} className="link-skip-to-zoom fade-in-3s">Skip Guidance</a>
+            {/*<a onClick={window.initiateZoomSessionCapture} className="link-skip-to-zoom fade-in-3s">Skip Guidance</a>*/}
           </div>
           
           <div id="unsuccess-retry-guide" className="user-helper">
@@ -93,7 +93,7 @@ class ZoomCamera extends React.Component {
                 </div>
             </div>
             <button className="fade-in-1s big-button" onClick={window.showNewUserGuidance}>OK</button>
-            <a onClick={window.initiateZoomSessionCapture} className="link-skip-to-zoom fade-in-3s">Skip Guidance</a>
+            {/*<a onClick={window.initiateZoomSessionCapture} className="link-skip-to-zoom fade-in-3s">Skip Guidance</a> */}
           </div>
 
           {/* Eksempel på funksjoner som må bli launchet på ulike steder */}
