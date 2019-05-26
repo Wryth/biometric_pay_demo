@@ -174,7 +174,7 @@ function onZoomSessionComplete(zoomResult) {
     dataToUpload.append("sessionId", zoomResult.sessionId);
     //dataToUpload.append("enrollmentIdentifier", window.localStorage.getItem("userName"));
     dataToUpload.append("facemap", zoomResult.facemap);
-    //dataToUpload.append("minMatchLevel", 1);
+    dataToUpload.append("minMatchLevel", 0);
     successMessage = "Search Confirmed";
     //xhr.withCredentials = true;
 

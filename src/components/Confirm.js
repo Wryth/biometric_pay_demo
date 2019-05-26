@@ -18,7 +18,7 @@ class Confirm extends React.Component {
           <img className="faceImg" alt="userFace" src={window.localStorage.getItem('matchedFace')} ></img>
         </div>
         <p>Du har betalt</p>
-        <p className="totalSum">kr 23,80</p>
+        <p className="totalSum">kr {this.props.states.totalSum}</p>
         <p>Du finner kvitteringen din i appen</p>
         <Link className="linkBtn" onClick={this.payComplete} id="betalBtn" to="/">Avslutt</Link>
     </div>

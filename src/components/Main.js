@@ -8,16 +8,19 @@ import Start from "./Start";
 import Pay from "./Pay";
 import Confirm from "./Confirm";
 import ZoomCamera from "./ZoomCamera";
-import Samtykke from "./Samtykke";
+import OmSamtykke from "./OmSamtykke";
+import Samtykke from "./onboarding/Samtykke";
 import ProfilePic from "./ProfilePic";
+import VelgVare from "./payInStore/VelgVare";
 
 class Main extends React.Component {
 constructor(props){
   super(props);
   this.state = {
     camera: false,
-    userName: 'Klara',
-    userNumber: '921 12 345'
+    userName: '',
+    userNumber: '',
+    totalSum: 0
   };
 }
 
@@ -102,11 +105,29 @@ showCamera = (onOff) => {
                             updateState={this.updateState}
                           />)}}/>
 
+          <Route path="/OmSamtykke" 
+                      render={() => {
+                        this.showCamera(false);
+                        return (
+                          <OmSamtykke 
+                            states={this.state}
+                            updateState={this.updateState}
+                          />)}}/>
+
           <Route path="/Samtykke" 
                       render={() => {
                         this.showCamera(false);
                         return (
                           <Samtykke 
+                            states={this.state}
+                            updateState={this.updateState}
+                          />)}}/>
+
+          <Route path="/VelgVare" 
+                      render={() => {
+                        this.showCamera(false);
+                        return (
+                          <VelgVare 
                             states={this.state}
                             updateState={this.updateState}
                           />)}}/>
