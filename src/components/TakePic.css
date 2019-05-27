@@ -6,3 +6,11 @@
 #mockH2{
     height: 46px;
 }
+
+#brukdette{
+    bottom: 0;
+    margin-bottom: 0;
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
