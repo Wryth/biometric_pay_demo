@@ -1,3 +1,17 @@
+React web app laget rundt facetec ZoomSDK.    
+https://www.zoomlogin.com/    
+https://dev.zoomlogin.com/zoomsdk/#/    
+
+SDKen er lagt i public mappen, med fuksjoner som gjør ulike API kall i controller.js. Disse blir kalt igjennom window i de ulike react komponentene.    
+feks:   
+window.startAuthentication();   
+window.startFaceSearch();   
+window.startLivenessCheck();    
+window.startEnrollment();   
+
+ops!:SDKen i public har mange ferdig definerte CSS filer, disse kan være vanskelig å jobbe rundt og er muligens verdt å fjerne og omskrive et annet sted.
+Så lang fungerer den best på mozilla firefox.
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
