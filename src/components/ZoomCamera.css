@@ -1,0 +1,42 @@
+
+.wrapping-box-container{
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.container-for-developer-overlays-and-zoom{
+    width: 100%;
+    position: relative;
+    border: none !important;
+}
+
+#zoom-parent-container{
+    width: 100% !important;
+}
+
+#zoom-video-element{
+    width: 100%;
+}
+
+.ZoomCamera{
+    display: none;
+    position: absolute;
+    z-index: 1;
+    margin-top: 46px;
+}
+
+.showCamera .ZoomCamera {
+    display: block;
+}
+
+
+/*Temporary
+background: none;
+*/
+#developer-overlay-semi-transparent-cover{
+}
+
+.controls{
+    display: none !important;
+}

@@ -1,0 +1,24 @@
+.vare{
+    height: 35px;
+    padding: 3px 3px 3px 10px;
+    border-radius: 4px;
+}
+
+.selected{
+    background-color: rgb(20,100,120);
+}
+
+.vareImg{
+    width: 27%;
+    float: left;
+}
+
+.vareNavn{
+    float: left;
+    margin: 6px;
+}
+
+.varePris{
+    float: right;
+    margin: 6px;
+}
